@@ -18,7 +18,7 @@ defaults:
     shell: bash
 
 env:
-  EXPECTED_CERT_SHA256: 1b5edf62b174211a13ccc32883cd74006cca47cb0fb368ae839b9ed6e0651a42
+  EXPECTED_CERT_SHA256: ${{ vars.ANDROID_SIGNING_CERT_SHA256 || '1b5edf62b174211a13ccc32883cd74006cca47cb0fb368ae839b9ed6e0651a42' }}
 
 jobs:
   build:
@@ -28,8 +28,8 @@ jobs:
     permissions:
       contents: read
     env:
-      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://rrhuqwaytpeerirbnhlc.supabase.co' }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_PLJY8arOylY074jvUZmyMw_2HFvo0RL' }}
     steps:
       - name: Check out the exact commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -59,6 +59,16 @@ jobs:
           if not re.fullmatch(r'sb_publishable_[A-Za-z0-9_-]+', key):
               sys.exit('::error::Set SUPABASE_PUBLISHABLE_KEY to a public sb_publishable_ key. Secret/service_role keys are forbidden.')
           PY
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Check database contract and hosted setup
+        run: |
+          npm ci --ignore-scripts
+          npm test
+          node scripts/check-cloud-config.mjs
 
       - name: Restore the existing signing key and verify its certificate
         env:
@@ -93,19 +103,19 @@ jobs:
             -PciBuildNumber="$GITHUB_RUN_NUMBER" \
             -PsupabaseUrl="$SUPABASE_URL" \
             -PsupabasePublishableKey="$SUPABASE_PUBLISHABLE_KEY" \
-            :app:testDebugUnitTest :app:assembleDebug
+            :app:validateSupabaseConfig :app:testDemoDebugUnitTest :app:testSupabaseDebugUnitTest :app:lintSupabaseDebug :app:assembleSupabaseDebug
 
       - name: Verify the APK and prepare release files
         run: |
           set -euo pipefail
-          apk='app/build/outputs/apk/debug/app-debug.apk'
+          apk='app/build/outputs/apk/supabase/debug/app-supabase-debug.apk'
           test -s "$apk"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$apk" > "$RUNNER_TEMP/apk-signature.txt"
           actual=$(awk -F': ' '/^Signer #1 certificate SHA-256 digest:/ {print tolower($2)}' "$RUNNER_TEMP/apk-signature.txt" | tr -d ':[:space:]')
           [[ "$actual" == "$EXPECTED_CERT_SHA256" ]] || { echo '::error::APK certificate mismatch'; exit 1; }
           python3 - <<'PY'
           import json, os
-          with open('app/build/outputs/apk/debug/output-metadata.json', encoding='utf-8') as stream:
+          with open('app/build/outputs/apk/supabase/debug/output-metadata.json', encoding='utf-8') as stream:
               metadata = json.load(stream)
           assert metadata['applicationId'] == 'kz.uniplan.app', 'Refusing to publish a demo or unexpected package'
           assert len(metadata['elements']) == 1, 'Expected one installable APK'
@@ -130,8 +140,8 @@ jobs:
         with:
           name: tests-${{ github.run_id }}
           path: |
-            app/build/test-results/testDebugUnitTest/
-            app/build/reports/tests/testDebugUnitTest/
+            app/build/test-results/
+            app/build/reports/
           if-no-files-found: ignore
           retention-days: 14
           overwrite: true

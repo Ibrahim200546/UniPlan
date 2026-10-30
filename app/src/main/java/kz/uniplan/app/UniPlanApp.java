@@ -17,6 +17,10 @@ public final class UniPlanApp extends Application {
         preferences=new SettingsStore(this); preferences.apply();
         auth=AuthProvider.create(this);
         data=new StudyRepository(AppDatabase.get(this),auth);
+        if(auth.supportsCloud()) {
+            kz.uniplan.app.data.auth.SupabaseHttp http=new kz.uniplan.app.data.auth.SupabaseHttp(BuildConfig.SUPABASE_URL,BuildConfig.SUPABASE_PUBLISHABLE_KEY);
+            data.configureCloud(http::request);
+        }
         files=new NoteFiles(this,auth);
     }
     public static UniPlanApp get(Context context) { return (UniPlanApp)context.getApplicationContext(); }

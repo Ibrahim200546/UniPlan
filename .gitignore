@@ -10,3 +10,10 @@ app/src/firebase/google-services.json
 *.apk
 *.aab
 *.hprof
+node_modules/
+supabase/.temp/
+supabase/.branches/
+.supabase/
+.env
+.env.*
+!*.example

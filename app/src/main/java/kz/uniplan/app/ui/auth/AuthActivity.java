@@ -30,7 +30,11 @@ public final class AuthActivity extends BaseActivity {
         binding.submit.setOnClickListener(v->model.submit(binding.name.getText().toString(),binding.email.getText().toString(),binding.password.getText().toString(),binding.repeat.getText().toString()));
         binding.toggle.setOnClickListener(v->{ model.toggle(); renderMode(); });
         binding.reset.setOnClickListener(v->model.reset(binding.email.getText().toString()));
-        model.busy.observe(this,busy->{ binding.progress.setVisibility(busy?View.VISIBLE:View.GONE); binding.submit.setEnabled(!busy); binding.reset.setEnabled(!busy); binding.toggle.setEnabled(!busy); });
+        binding.resend.setVisibility(app.auth().supportsCloud()?View.VISIBLE:View.GONE);
+        binding.resend.setOnClickListener(v->model.resend(binding.email.getText().toString()));
+        binding.cancelRecovery.setOnClickListener(v->app.auth().signOut());
+        model.busy.observe(this,busy->{ binding.progress.setVisibility(busy?View.VISIBLE:View.GONE); binding.submit.setEnabled(!busy); binding.reset.setEnabled(!busy); binding.toggle.setEnabled(!busy); binding.resend.setEnabled(!busy); });
+        app.auth().recovering().observe(this,recovering->renderMode());
         model.notice.observe(this,notice->{ if(notice!=null) { Snackbar.make(binding.getRoot(),notice,Snackbar.LENGTH_LONG).show(); model.notice.setValue(null); } });
         app.auth().session().observe(this,session->{
             if(session!=null && !navigated) {
@@ -42,10 +46,23 @@ public final class AuthActivity extends BaseActivity {
             }
         });
         renderMode();
+        handleIntent(getIntent());
+    }
+    @Override protected void onNewIntent(Intent intent) { super.onNewIntent(intent); setIntent(intent); handleIntent(intent); }
+    private void handleIntent(Intent intent) {
+        if(intent.getData()!=null) {
+            String uri=intent.getData().toString(); intent.setData(null); model.redirect(uri);
+        }
     }
     private void renderMode() {
-        boolean register=model.registering(); binding.nameBox.setVisibility(register?View.VISIBLE:View.GONE); binding.repeatBox.setVisibility(register?View.VISIBLE:View.GONE);
-        binding.submit.setText(register?R.string.auth_register:R.string.auth_sign_in); binding.toggle.setText(register?R.string.auth_have_account:R.string.auth_create_account);
+        boolean recovery=model.recovering(), register=model.registering()&&!recovery;
+        binding.nameBox.setVisibility(register?View.VISIBLE:View.GONE); binding.repeatBox.setVisibility(register||recovery?View.VISIBLE:View.GONE);
+        binding.emailBox.setVisibility(recovery?View.GONE:View.VISIBLE);
+        binding.toggle.setVisibility(recovery?View.GONE:View.VISIBLE); binding.reset.setVisibility(recovery?View.GONE:View.VISIBLE);
+        binding.resend.setVisibility(!recovery&&UniPlanApp.get(this).auth().supportsCloud()?View.VISIBLE:View.GONE);
+        binding.cancelRecovery.setVisibility(recovery?View.VISIBLE:View.GONE);
+        binding.submit.setText(recovery?R.string.auth_new_password:register?R.string.auth_register:R.string.auth_sign_in);
+        binding.toggle.setText(register?R.string.auth_have_account:R.string.auth_create_account);
     }
     @Override protected void onDestroy() { binding=null; super.onDestroy(); }
 }

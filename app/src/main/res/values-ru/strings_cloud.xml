@@ -1,0 +1,21 @@
+<resources>
+    <string name="auth_confirm_email">Подтвердите почту по ссылке в письме. Откройте письмо на этом устройстве, затем войдите. Проверьте папку «Спам».</string>
+    <string name="auth_resend">Отправить подтверждение ещё раз</string>
+    <string name="auth_rate_limit">Слишком много попыток. Подождите немного и повторите.</string>
+    <string name="auth_link_expired">Ссылка недействительна или была запрошена на другом устройстве. Запросите новое письмо здесь.</string>
+    <string name="auth_session_expired">Сессия завершена. Войдите снова.</string>
+    <string name="auth_new_password">Сохранить новый пароль</string>
+    <string name="sync_title">Облачное сохранение</string>
+    <string name="sync_help">Сохраняет профиль, предметы, задания, расписание и заметки в вашем аккаунте. Нажмите после изменений или на другом устройстве. Без интернета данные остаются здесь.</string>
+    <string name="sync_now">Синхронизировать</string>
+    <string name="sync_busy">Синхронизация…</string>
+    <string name="sync_done">Данные синхронизированы</string>
+    <string name="sync_error">Синхронизация не выполнена. Локальные данные сохранены. Проверьте интернет и настройку сервиса.</string>
+    <string name="sync_conflict">Данные различаются</string>
+    <string name="sync_conflict_help">В облаке и на устройстве есть изменения. Выберите версию. Замена затронет все учебные записи текущего аккаунта. Пока вы не выбрали, обе версии сохранены.</string>
+    <string name="sync_keep_local">Сохранить версию устройства</string>
+    <string name="sync_keep_remote">Загрузить версию из облака</string>
+    <string name="sync_replace_title">Заменить данные?</string>
+    <string name="sync_replace_local">Текущая версия на устройстве заменит облачную. Продолжить?</string>
+    <string name="sync_replace_remote">Текущая версия в облаке заменит данные на этом устройстве. Продолжить?</string>
+</resources>

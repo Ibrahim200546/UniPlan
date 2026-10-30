@@ -11,6 +11,12 @@ import kz.uniplan.app.data.local.entity.*;
 /** Every read and mutation names an owner; only StudyRepository is used by UI. */
 @Dao
 public abstract class StudyDao {
+    @Query("SELECT * FROM sync_state WHERE ownerUid=:uid") public abstract SyncStateEntity syncState(String uid);
+    @Insert(onConflict = OnConflictStrategy.REPLACE) public abstract void saveSyncState(SyncStateEntity value);
+    @Query("DELETE FROM tasks WHERE ownerUid=:uid") public abstract void clearTasks(String uid);
+    @Query("DELETE FROM lessons WHERE ownerUid=:uid") public abstract void clearLessons(String uid);
+    @Query("DELETE FROM notes WHERE ownerUid=:uid") public abstract void clearNotes(String uid);
+    @Query("DELETE FROM subjects WHERE ownerUid=:uid") public abstract void clearSubjects(String uid);
     @Query("SELECT * FROM profiles WHERE ownerUid = :uid LIMIT 1") public abstract LiveData<ProfileEntity> observeProfile(String uid);
     @Query("SELECT * FROM profiles WHERE ownerUid = :uid LIMIT 1") public abstract ProfileEntity profile(String uid);
     @Insert(onConflict = OnConflictStrategy.IGNORE) public abstract long insertProfile(ProfileEntity value);

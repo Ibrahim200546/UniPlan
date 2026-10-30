@@ -1,0 +1,12 @@
+{
+  "name": "uniplan-database-tests",
+  "version": "1.2.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test scripts/test-migrations.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "supabase": "2.99.0"
+  }
+}

@@ -30,6 +30,20 @@ public final class ProfileFragment extends BaseFragment {
         binding.name.setText(restoredName); binding.group.setText(restoredGroup);
         Ui.watch(binding.name,value->model.state.set("name",value)); Ui.watch(binding.group,value->model.state.set("group",value));
         binding.saveProfile.setOnClickListener(v->model.save(binding.name.getText().toString(),binding.group.getText().toString()));
+        binding.cloudPanel.setVisibility(app().auth().supportsCloud()?View.VISIBLE:View.GONE);
+        binding.sync.setOnClickListener(v->model.sync(false,false));
+        model.syncing.observe(getViewLifecycleOwner(),busy->binding.sync.setEnabled(!busy));
+        model.syncNotice.observe(getViewLifecycleOwner(),notice->{ if(notice!=null) binding.syncStatus.setText(notice); });
+        model.synchronizedProfile.observe(getViewLifecycleOwner(),profile->{ if(profile!=null) {
+            binding.name.setText(profile.displayName); binding.group.setText(profile.studyGroup);
+            model.synchronizedProfile.setValue(null);
+        } });
+        model.conflict.observe(getViewLifecycleOwner(),conflict->{ if(conflict!=null) {
+            new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.sync_conflict).setMessage(R.string.sync_conflict_help)
+                .setNegativeButton(R.string.cancel,null)
+                .setPositiveButton(R.string.sync_keep_local,(d,w)->confirmSync(true))
+                .setNeutralButton(R.string.sync_keep_remote,(d,w)->confirmSync(false)).show();
+        } });
         binding.subjects.setOnClickListener(v->NavHostFragment.findNavController(this).navigate(R.id.subjectListFragment));
         binding.appearance.setOnClickListener(v->NavHostFragment.findNavController(this).navigate(R.id.appearanceFragment));
         binding.seed.setVisibility(app().auth().isDemo()?View.VISIBLE:View.GONE);
@@ -42,6 +56,11 @@ public final class ProfileFragment extends BaseFragment {
         setupSpinner(binding.noteLayout,R.array.note_layout_options,app().prefs().noteGrid(session.uid)?1:0,position->app().prefs().setNoteGrid(session.uid,position==1));
         model.busy.observe(getViewLifecycleOwner(),busy->{ binding.saveProfile.setEnabled(!busy); binding.seed.setEnabled(!busy); binding.progress.setVisibility(busy?View.VISIBLE:View.GONE); });
         model.result.observe(getViewLifecycleOwner(),result->{ if(result==null) return; if(result.equals("saved")||result.startsWith("seeded")) Toast.makeText(requireContext(),result.equals("saved")?R.string.saved:result.equals("seeded")?R.string.profile_seed_done:R.string.profile_seed_already,Toast.LENGTH_LONG).show(); else message(result); model.result.setValue(null); });
+    }
+    private void confirmSync(boolean keepLocal) {
+        new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.sync_replace_title)
+            .setMessage(keepLocal?R.string.sync_replace_local:R.string.sync_replace_remote)
+            .setNegativeButton(R.string.cancel,null).setPositiveButton(R.string.ok,(d,w)->model.sync(true,keepLocal)).show();
     }
     private void setupSpinner(android.widget.Spinner spinner,int array,int selection,java.util.function.IntConsumer action) {
         ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(requireContext(),array,android.R.layout.simple_spinner_item); adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); spinner.setAdapter(adapter); spinner.setSelection(selection);

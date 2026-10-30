@@ -72,7 +72,7 @@
 <string name="profile_seed_already">Бұл профильге үлгі деректер бұрын қосылған</string>
 <string name="profile_signout_help">Жергілікті жазбалар осы құрылғыда сақталады.</string>
 <string name="about_title">UniPlan туралы</string>
-<string name="about_text">UniPlan 1.0\nАвтор: Тәңірберген Ибраһим\nТоп: АЖҚ-321\n\nЖеке оқу ұйымдастырушысы. Жазбалар құрылғыда сақталады. Бұл нұсқа құрылғылар арасында деректерді синхрондамайды.</string>
+<string name="about_text">UniPlan 1.2.0\nАвтор: Тәңірберген Ибраһим\nТоп: АЖҚ-321\n\nЖеке оқу ұйымдастырушысы. Жазбалар құрылғыда қолжетімді. Supabase нұсқасында бұлтқа сақтау профильден іске қосылады.</string>
 <string name="profile_learn">Android оқу материалдары</string>
 <string name="brand_description">UniPlan оқу ұйымдастырушысы</string>
 <string-array name="theme_options"><item>Жүйелік</item><item>Ашық</item><item>Қараңғы</item></string-array>

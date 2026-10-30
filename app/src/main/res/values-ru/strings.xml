@@ -72,7 +72,7 @@
 <string name="profile_seed_already">В этот профиль примеры уже добавлены</string>
 <string name="profile_signout_help">Локальные записи останутся на этом устройстве.</string>
 <string name="about_title">О приложении UniPlan</string>
-<string name="about_text">UniPlan 1.0\nАвтор: Тәңірберген Ибраһим\nГруппа: АЖҚ-321\n\nЛичный учебный органайзер. Записи хранятся на устройстве. Синхронизация между устройствами не предусмотрена.</string>
+<string name="about_text">UniPlan 1.2.0\nАвтор: Тәңірберген Ибраһим\nГруппа: АЖҚ-321\n\nЛичный учебный органайзер. Записи доступны на устройстве. В Supabase-версии облачное сохранение запускается в профиле.</string>
 <string name="profile_learn">Учебные материалы Android</string>
 <string name="brand_description">Учебный органайзер UniPlan</string>
 <string-array name="theme_options"><item>Системная</item><item>Светлая</item><item>Тёмная</item></string-array>
