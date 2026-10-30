@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="kz.uniplan.app.domain.ValidationTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-30T05:54:30" hostname="DESKTOP-9J43I6R" time="0.013">
+  <properties />
+  <testcase name="emailRejectsBrokenLabelsAndMultipleAddresses" classname="kz.uniplan.app.domain.ValidationTest" time="0.002" />
+  <testcase name="registrationRequiresNameAndMatchingConfirmation" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  <testcase name="taskRequiresSubjectAndValidEnums" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  <testcase name="loginDoesNotApplyNewAccountPasswordPolicy" classname="kz.uniplan.app.domain.ValidationTest" time="0.002" />
+  <testcase name="emailAndRegistrationValidateFieldsAndConfirmation" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  <testcase name="scheduleRejectsOvernightAndEqualIntervals" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  <testcase name="sortingHasDeterministicTies" classname="kz.uniplan.app.domain.ValidationTest" time="0.004" />
+  <testcase name="overdueIsDerivedAndCompletedNeverOverdue" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  <testcase name="requiredAndTitleRejectBlankAndOversize" classname="kz.uniplan.app.domain.ValidationTest" time="0.001" />
+  <testcase name="domainRejectsInvalidState" classname="kz.uniplan.app.domain.ValidationTest" time="0.001" />
+  <testcase name="polymorphicFactoryUsesConcreteKindsAndImmutableFields" classname="kz.uniplan.app.domain.ValidationTest" time="0.0" />
+  </testsuite>

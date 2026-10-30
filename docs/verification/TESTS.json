@@ -1,0 +1,51 @@
+[
+  {
+    "suite": "kz.uniplan.app.data.RepositoryRobolectricTest",
+    "tests": 10,
+    "failures": 0,
+    "skipped": 0,
+    "cases": [
+      "taskCrudUndoAndSubjectRestrictionUseRealTransactions",
+      "profileIsInitializedWithoutOpeningScreenAndEditsSurviveRelogin",
+      "exportWritesClosesAndDistinguishesCancelIoAndOwnerMismatch",
+      "lessonAndNoteCrudValidateIntervalsAndPreserveOptionalSubject",
+      "liveDataClearsOldOwnerBeforeNewQueryEmits",
+      "delayedOperationCannotWriteUsingTheNewSession",
+      "foreignIdsAndCompositeForeignKeysRejectCrossOwnerAccess",
+      "externalReadOnlyAndMissingCopyReturnErrorsWithoutTouchingRoom",
+      "explicitDemoSeedIsIdempotentAndPartitionedByOwner",
+      "internalAndExternalCopiesRoundTripUtf8WithoutChangingRoom"
+    ]
+  },
+  {
+    "suite": "kz.uniplan.app.domain.ValidationTest",
+    "tests": 11,
+    "failures": 0,
+    "skipped": 0,
+    "cases": [
+      "emailRejectsBrokenLabelsAndMultipleAddresses",
+      "registrationRequiresNameAndMatchingConfirmation",
+      "taskRequiresSubjectAndValidEnums",
+      "loginDoesNotApplyNewAccountPasswordPolicy",
+      "emailAndRegistrationValidateFieldsAndConfirmation",
+      "scheduleRejectsOvernightAndEqualIntervals",
+      "sortingHasDeterministicTies",
+      "overdueIsDerivedAndCompletedNeverOverdue",
+      "requiredAndTitleRejectBlankAndOversize",
+      "domainRejectsInvalidState",
+      "polymorphicFactoryUsesConcreteKindsAndImmutableFields"
+    ]
+  },
+  {
+    "suite": "kz.uniplan.app.ui.NavigationSmokeTest",
+    "tests": 4,
+    "failures": 0,
+    "skipped": 0,
+    "cases": [
+      "notePreviewAndUnsavedDraftSurviveRecreationWithoutDuplicateChildren",
+      "taskDraftRetainsTextAndSingleChoicesAcrossActivityRecreation",
+      "nestedFormsAndListViewPickerInflateAndReturnToParent",
+      "fiveSectionsInflateAndTaskTabsRemainWiredAfterReturning"
+    ]
+  }
+]

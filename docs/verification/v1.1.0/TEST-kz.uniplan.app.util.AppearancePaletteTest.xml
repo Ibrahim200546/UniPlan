@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="kz.uniplan.app.util.AppearancePaletteTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-30T05:54:48" hostname="DESKTOP-9J43I6R" time="0.025">
+  <properties />
+  <testcase name="arbitraryBackgroundsAlwaysReceiveReadableText" classname="kz.uniplan.app.util.AppearancePaletteTest" time="0.019" />
+  <testcase name="hexRequiresExactlySixRgbDigitsAndNormalizesOutput" classname="kz.uniplan.app.util.AppearancePaletteTest" time="0.002" />
+  <testcase name="invalidCornerRadiusCannotEnterSavedPalette" classname="kz.uniplan.app.util.AppearancePaletteTest" time="0.0" />
+  <testcase name="accentsAreAdjustedOnlyWhenNeededForContrast" classname="kz.uniplan.app.util.AppearancePaletteTest" time="0.002" />
+  <testcase name="presetsWorkInBothThemesAndColorsRemainIndependent" classname="kz.uniplan.app.util.AppearancePaletteTest" time="0.0" />
+  </testsuite>

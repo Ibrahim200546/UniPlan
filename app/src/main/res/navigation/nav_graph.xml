@@ -1,0 +1,36 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph" app:startDestination="@id/homeFragment">
+<fragment android:id="@+id/homeFragment" android:name="kz.uniplan.app.ui.home.HomeFragment" android:label="@string/today">
+<action android:id="@+id/action_home_to_task" app:destination="@id/taskEditFragment"/><action android:id="@+id/action_home_to_note" app:destination="@id/noteEditFragment"/>
+</fragment>
+<fragment android:id="@+id/tasksFragment" android:name="kz.uniplan.app.ui.tasks.TasksFragment" android:label="@string/tasks">
+</fragment>
+<fragment android:id="@+id/scheduleFragment" android:name="kz.uniplan.app.ui.schedule.ScheduleFragment" android:label="@string/schedule">
+</fragment>
+<fragment android:id="@+id/notesFragment" android:name="kz.uniplan.app.ui.notes.NotesFragment" android:label="@string/notes">
+</fragment>
+<fragment android:id="@+id/profileFragment" android:name="kz.uniplan.app.ui.profile.ProfileFragment" android:label="@string/profile">
+</fragment>
+<fragment android:id="@+id/subjectListFragment" android:name="kz.uniplan.app.ui.subjects.SubjectListFragment" android:label="@string/manage_subjects">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/subjectEditFragment" android:name="kz.uniplan.app.ui.subjects.SubjectEditFragment" android:label="@string/subject">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/subjectPickerFragment" android:name="kz.uniplan.app.ui.subjects.SubjectPickerFragment" android:label="@string/select_subject">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+<argument android:name="resultKey" app:argType="string" android:defaultValue="subject_pick"/><argument android:name="allowNone" app:argType="boolean" android:defaultValue="false"/>
+</fragment>
+<fragment android:id="@+id/taskDetailFragment" android:name="kz.uniplan.app.ui.tasks.TaskDetailFragment" android:label="@string/tasks">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/taskEditFragment" android:name="kz.uniplan.app.ui.tasks.TaskEditFragment" android:label="@string/tasks">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/lessonEditFragment" android:name="kz.uniplan.app.ui.schedule.LessonEditFragment" android:label="@string/schedule">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/noteEditFragment" android:name="kz.uniplan.app.ui.notes.NoteEditFragment" android:label="@string/notes">
+<argument android:name="id" app:argType="long" android:defaultValue="0L"/>
+</fragment>
+<fragment android:id="@+id/appearanceFragment" android:name="kz.uniplan.app.ui.profile.AppearanceFragment" android:label="@string/appearance_title" />
+</navigation>

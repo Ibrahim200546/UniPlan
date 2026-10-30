@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="subject_color_hex">Цвет предмета · #RRGGBB</string>
+    <string name="subject_color_custom">Свой цвет</string>
+    <string name="subject_color_invalid">Введите цвет в формате #RRGGBB, например #52796F.</string>
+    <string name="lesson_number">Номер занятия (необязательно)</string>
+    <string name="lesson_number_value">Занятие %1$d</string>
+    <string name="lesson_type">Вид занятия</string>
+    <string name="lesson_teacher">Преподаватель этого занятия</string>
+    <string name="lesson_teacher_help">Оставьте пустым, чтобы показывать преподавателя предмета.</string>
+    <string name="lesson_link">Ссылка ВКС или другая ссылка</string>
+    <string name="lesson_open_link">Открыть ссылку</string>
+    <string name="lesson_invalid_link">Введите корректную ссылку, начинающуюся с http:// или https://.</string>
+    <string name="lesson_no_browser">Не найдено приложение для открытия ссылки.</string>
+    <string name="lesson_invalid_number">Введите номер занятия от 1 до 99 или оставьте поле пустым.</string>
+    <string name="lesson_day_count">В выбранный день: %1$d · За неделю: %2$d</string>
+    <string-array name="lesson_types"><item>Лекция</item><item>Практическое занятие</item><item>Лабораторное занятие</item></string-array>
+</resources>

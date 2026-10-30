@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+        <TextView android:id="@+id/noteStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/notes_unsaved" android:textAppearance="?attr/textAppearanceLabelLarge" android:paddingBottom="12dp" android:accessibilityLiveRegion="polite" />
+        <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/noteBusy" android:layout_width="match_parent" android:layout_height="wrap_content" android:indeterminate="true" android:visibility="gone" />
+        <com.google.android.material.textfield.TextInputLayout android:id="@+id/noteTitleLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/title" app:counterEnabled="true" app:counterMaxLength="120">
+            <com.google.android.material.textfield.TextInputEditText android:id="@+id/noteTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapSentences" android:maxLength="120" android:maxLines="2" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton android:id="@+id/noteSubject" style="?attr/materialButtonOutlinedStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/no_subject" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/noteManageSubjects" style="?attr/borderlessButtonStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/manage_subjects" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton android:id="@+id/notePreview" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/preview" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/noteCopies" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:minHeight="48dp" android:text="@string/notes_copies" />
+        </LinearLayout>
+        <androidx.fragment.app.FragmentContainerView android:id="@+id/noteChildContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="220dp" />
+        <TextView android:id="@+id/noteTimestamps" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="12dp" android:paddingBottom="12dp" android:textAppearance="?attr/textAppearanceBodySmall" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/noteSave" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/save" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/noteDelete" style="?attr/materialButtonOutlinedStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/delete" android:textColor="?attr/colorError" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+

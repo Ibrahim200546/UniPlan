@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes_intro">Маңызды ойлар мен сабақ жазбалары — бір жерде.</string>
+    <string name="notes_search">Жазбаны атауы бойынша іздеу</string>
+    <string name="notes_create">Жазба жасау</string>
+    <string name="notes_grid">Тор</string>
+    <string name="notes_list">Тізім</string>
+    <string name="notes_empty">Әзірге жазба жоқ. Алғашқы ойыңызды сақтаңыз.</string>
+    <string name="notes_no_matches">Іздеу бойынша жазба табылмады.</string>
+    <string name="notes_content">Жазба мәтіні</string>
+    <string name="notes_copies">Көшірмелер</string>
+    <string name="notes_internal_save">Ішкі жадқа көшірме сақтау</string>
+    <string name="notes_internal_open">Ішкі жадтағы көшірмені ашу</string>
+    <string name="notes_external_save">Қосымшаның сыртқы қалтасына сақтау</string>
+    <string name="notes_external_open">Сыртқы қалтадағы көшірмені ашу</string>
+    <string name="notes_export">TXT ретінде сақтау…</string>
+    <string name="notes_copy_saved">Мәтін көшірмесі сақталды</string>
+    <string name="notes_copy_opened">Көшірме ашылды. Жазбаны жаңарту үшін «Сақтау» түймесін басыңыз.</string>
+    <string name="notes_copy_confirm">Көшірмені ашу редактордағы мәтінді ауыстырады. Сақталған жазба «Сақтау» түймесін басқанша өзгермейді.</string>
+    <string name="notes_save_first">Алдымен жазбаны сақтаңыз</string>
+    <string name="notes_unsaved">Сақталмаған өзгерістер</string>
+    <string name="notes_saved_state">Барлық өзгеріс сақталды</string>
+    <string name="notes_modified">Өзгертілген уақыты: %1$s</string>
+    <string name="notes_dates">Жасалған уақыты: %1$s\nӨзгертілген уақыты: %2$s</string>
+    <string name="notes_open">«%1$s» жазбасын ашу</string>
+    <string name="notes_discard_title">Өзгерістерді сақтамай шығу керек пе?</string>
+    <string name="notes_discard_message">Осы экрандағы сақталмаған өзгерістер жойылады.</string>
+    <string name="notes_discard">Сақтамай шығу</string>
+    <string name="notes_export_cancelled">Экспорт тоқтатылды</string>
+    <string name="notes_exported">TXT файлы сақталды</string>
+    <string name="notes_untitled">Атаусыз жазба</string>
+</resources>

@@ -1,0 +1,104 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDemoDebugBuild UP-TO-DATE
+> Task :app:mergeDemoDebugNativeDebugMetadata NO-SOURCE
+> Task :app:dataBindingMergeDependencyArtifactsDemoDebug
+> Task :app:generateDemoDebugResValues
+> Task :app:generateDemoDebugResources
+> Task :app:mergeDemoDebugResources
+> Task :app:packageDemoDebugResources
+> Task :app:generateDemoDebugBuildConfig
+> Task :app:parseDemoDebugLocalResources
+> Task :app:javaPreCompileDemoDebug
+> Task :app:dataBindingGenBaseClassesDemoDebug
+> Task :app:mapDemoDebugSourceSetPaths
+> Task :app:checkDemoDebugAarMetadata
+> Task :app:createDemoDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDemoDebug
+> Task :app:processDemoDebugMainManifest
+> Task :app:processDemoDebugManifest
+> Task :app:mergeDemoDebugShaders
+> Task :app:processDemoDebugManifestForPackage
+> Task :app:compileDemoDebugShaders NO-SOURCE
+> Task :app:generateDemoDebugAssets UP-TO-DATE
+> Task :app:mergeDemoDebugAssets
+> Task :app:compressDemoDebugAssets
+> Task :app:processDemoDebugResources
+> Task :app:l8DexDesugarLibDemoDebug
+> Task :app:compileDemoDebugJavaWithJavac
+> Task :app:desugarDemoDebugFileDependencies
+> Task :app:dexBuilderDemoDebug
+> Task :app:mergeDemoDebugGlobalSynthetics
+> Task :app:processDemoDebugJavaRes
+> Task :app:checkDemoDebugDuplicateClasses
+> Task :app:mergeDemoDebugJavaResource
+> Task :app:mergeExtDexDemoDebug
+> Task :app:mergeLibDexDemoDebug
+> Task :app:mergeDemoDebugJniLibFolders
+> Task :app:mergeDemoDebugNativeLibs NO-SOURCE
+> Task :app:stripDemoDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDemoDebug
+> Task :app:mergeProjectDexDemoDebug
+> Task :app:writeDemoDebugAppMetadata
+> Task :app:writeDemoDebugSigningConfigVersions
+> Task :app:preFirebaseDebugBuild UP-TO-DATE
+> Task :app:mergeFirebaseDebugNativeDebugMetadata NO-SOURCE
+> Task :app:dataBindingMergeDependencyArtifactsFirebaseDebug
+> Task :app:generateFirebaseDebugResValues
+> Task :app:generateFirebaseDebugResources
+> Task :app:packageDemoDebug
+> Task :app:createDemoDebugApkListingFileRedirect
+> Task :app:assembleDemoDebug
+> Task :app:mergeFirebaseDebugResources
+> Task :app:packageFirebaseDebugResources
+> Task :app:generateFirebaseDebugBuildConfig
+> Task :app:parseFirebaseDebugLocalResources
+> Task :app:javaPreCompileFirebaseDebug
+> Task :app:dataBindingGenBaseClassesFirebaseDebug
+> Task :app:mapFirebaseDebugSourceSetPaths
+> Task :app:checkFirebaseDebugAarMetadata
+> Task :app:createFirebaseDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksFirebaseDebug
+> Task :app:processFirebaseDebugMainManifest
+> Task :app:processFirebaseDebugManifest
+> Task :app:mergeFirebaseDebugShaders
+> Task :app:compileFirebaseDebugShaders NO-SOURCE
+> Task :app:generateFirebaseDebugAssets UP-TO-DATE
+> Task :app:mergeFirebaseDebugAssets
+> Task :app:compressFirebaseDebugAssets
+> Task :app:processFirebaseDebugManifestForPackage
+> Task :app:processFirebaseDebugResources
+> Task :app:l8DexDesugarLibFirebaseDebug
+> Task :app:compileFirebaseDebugJavaWithJavac
+> Task :app:desugarFirebaseDebugFileDependencies
+> Task :app:checkFirebaseDebugDuplicateClasses
+> Task :app:dexBuilderFirebaseDebug
+> Task :app:mergeExtDexFirebaseDebug
+> Task :app:mergeFirebaseDebugGlobalSynthetics
+> Task :app:processFirebaseDebugJavaRes
+> Task :app:mergeLibDexFirebaseDebug
+> Task :app:mergeProjectDexFirebaseDebug
+> Task :app:mergeFirebaseDebugJniLibFolders
+> Task :app:mergeFirebaseDebugNativeLibs
+
+> Task :app:stripFirebaseDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so.
+
+> Task :app:validateSigningFirebaseDebug
+> Task :app:writeFirebaseDebugAppMetadata
+> Task :app:writeFirebaseDebugSigningConfigVersions
+> Task :app:mergeFirebaseDebugJavaResource
+> Task :app:packageFirebaseDebug
+> Task :app:createFirebaseDebugApkListingFileRedirect
+> Task :app:assembleFirebaseDebug
+[Incubating] Problems report is available at: file:///C:/Users/Student/Documents/Codex/2026-10-30/files-mentioned-by-the-user-zip/work/unpacked-check/UniPlan/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 41s
+76 actionable tasks: 76 executed

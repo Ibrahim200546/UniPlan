@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="subject_color_hex">Пән түсі · #RRGGBB</string>
+    <string name="subject_color_custom">Өз түсім</string>
+    <string name="subject_color_invalid">Түсті #RRGGBB пішімінде енгізіңіз, мысалы #52796F.</string>
+    <string name="lesson_number">Сабақ нөмірі (міндетті емес)</string>
+    <string name="lesson_number_value">%1$d-сабақ</string>
+    <string name="lesson_type">Сабақ түрі</string>
+    <string name="lesson_teacher">Осы сабақтың оқытушысы</string>
+    <string name="lesson_teacher_help">Бос қалдырсаңыз, пәннің оқытушысы көрсетіледі.</string>
+    <string name="lesson_link">ВКС немесе басқа сілтеме</string>
+    <string name="lesson_open_link">Сілтемені ашу</string>
+    <string name="lesson_invalid_link">http:// немесе https:// арқылы басталатын дұрыс сілтемені енгізіңіз.</string>
+    <string name="lesson_no_browser">Сілтемені ашатын қолданба табылмады.</string>
+    <string name="lesson_invalid_number">Сабақ нөмірі 1–99 аралығында болуы керек немесе өрісті бос қалдырыңыз.</string>
+    <string name="lesson_day_count">Таңдалған күн: %1$d сабақ · Апта: %2$d</string>
+    <string-array name="lesson_types"><item>Дәріс</item><item>Практикалық сабақ</item><item>Зертханалық сабақ</item></string-array>
+</resources>

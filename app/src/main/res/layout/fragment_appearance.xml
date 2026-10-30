@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/appearance_title" android:textSize="26sp" android:textStyle="bold" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/appearance_intro" android:textSize="16sp" />
+        <RadioGroup android:id="@+id/paletteTheme" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
+            <RadioButton android:id="@+id/paletteLight" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="48dp" android:text="@string/appearance_light" />
+            <RadioButton android:id="@+id/paletteDark" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="48dp" android:text="@string/appearance_dark" />
+        </RadioGroup>
+        <TextView android:id="@+id/paletteHint" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="14sp" android:paddingVertical="8dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/appearance_preset" android:textStyle="bold" android:labelFor="@id/presets" />
+        <Spinner android:id="@+id/presets" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:contentDescription="@string/appearance_preset" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <com.google.android.material.textfield.TextInputLayout android:id="@+id/backgroundBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="@string/appearance_background">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/backgroundHex" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapCharacters|textNoSuggestions" android:maxLength="7" android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <View android:id="@+id/backgroundSwatch" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginStart="12dp" android:importantForAccessibility="no" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputLayout android:id="@+id/cardBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="@string/appearance_card">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/cardHex" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapCharacters|textNoSuggestions" android:maxLength="7" android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <View android:id="@+id/cardSwatch" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginStart="12dp" android:importantForAccessibility="no" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputLayout android:id="@+id/accentBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="@string/appearance_accent">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/accentHex" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapCharacters|textNoSuggestions" android:maxLength="7" android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <View android:id="@+id/accentSwatch" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginStart="12dp" android:importantForAccessibility="no" />
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/appearance_contrast_hint" android:textSize="14sp" />
+        <TextView android:id="@+id/cornerValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:textStyle="bold" android:labelFor="@id/cornerSlider" />
+        <SeekBar android:id="@+id/cornerSlider" android:layout_width="match_parent" android:layout_height="48dp" android:max="32" android:contentDescription="@string/appearance_corner" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:text="@string/appearance_live_preview" android:textSize="20sp" android:textStyle="bold" />
+        <LinearLayout android:id="@+id/previewArea" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/appearance_preview_heading" android:textSize="18sp" android:layout_marginBottom="12dp" />
+            <com.google.android.material.card.MaterialCardView android:id="@+id/previewCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/appearance_preview_title" android:textSize="18sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/appearance_preview_body" android:textSize="15sp" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/previewButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="12dp" android:text="@string/appearance_preview_button" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton android:id="@+id/applyAppearance" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:minHeight="48dp" android:text="@string/appearance_apply" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/resetAppearance" style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/appearance_reset" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

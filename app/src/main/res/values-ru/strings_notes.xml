@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes_intro">Важные мысли и конспекты — в одном месте.</string>
+    <string name="notes_search">Поиск заметки по названию</string>
+    <string name="notes_create">Создать заметку</string>
+    <string name="notes_grid">Сетка</string>
+    <string name="notes_list">Список</string>
+    <string name="notes_empty">Заметок пока нет. Сохраните первую мысль.</string>
+    <string name="notes_no_matches">По вашему запросу заметки не найдены.</string>
+    <string name="notes_content">Текст заметки</string>
+    <string name="notes_copies">Копии</string>
+    <string name="notes_internal_save">Сохранить копию во внутреннюю память</string>
+    <string name="notes_internal_open">Открыть внутреннюю копию</string>
+    <string name="notes_external_save">Сохранить в собственную внешнюю папку</string>
+    <string name="notes_external_open">Открыть копию из внешней папки</string>
+    <string name="notes_export">Сохранить как TXT…</string>
+    <string name="notes_copy_saved">Текстовая копия сохранена</string>
+    <string name="notes_copy_opened">Копия открыта. Нажмите «Сохранить», чтобы обновить заметку.</string>
+    <string name="notes_copy_confirm">Открытие копии заменит текст редактора. Сохранённая заметка изменится только после нажатия «Сохранить».</string>
+    <string name="notes_save_first">Сначала сохраните заметку</string>
+    <string name="notes_unsaved">Есть несохранённые изменения</string>
+    <string name="notes_saved_state">Все изменения сохранены</string>
+    <string name="notes_modified">Изменено: %1$s</string>
+    <string name="notes_dates">Создано: %1$s\nИзменено: %2$s</string>
+    <string name="notes_open">Открыть заметку «%1$s»</string>
+    <string name="notes_discard_title">Выйти без сохранения?</string>
+    <string name="notes_discard_message">Несохранённые изменения на этом экране будут потеряны.</string>
+    <string name="notes_discard">Выйти без сохранения</string>
+    <string name="notes_export_cancelled">Экспорт отменён</string>
+    <string name="notes_exported">TXT-файл сохранён</string>
+    <string name="notes_untitled">Без названия</string>
+</resources>

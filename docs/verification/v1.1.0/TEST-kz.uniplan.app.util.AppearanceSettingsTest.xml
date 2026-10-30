@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="kz.uniplan.app.util.AppearanceSettingsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-30T05:54:48" hostname="DESKTOP-9J43I6R" time="1.307">
+  <properties />
+  <testcase name="invalidHexKeepsPreviewAndCannotOverwriteSavedPalette" classname="kz.uniplan.app.util.AppearanceSettingsTest" time="0.072" />
+  <testcase name="appearanceScreenKeepsHexDraftAcrossActivityRecreationAndAppliesInPlace" classname="kz.uniplan.app.util.AppearanceSettingsTest" time="1.106" />
+  <testcase name="savedLightAndDarkPalettesSurviveNewStoreAndResetIndependently" classname="kz.uniplan.app.util.AppearanceSettingsTest" time="0.086" />
+  <testcase name="draftRestorationKeepsBothThemesWithoutPersistingBeforeApply" classname="kz.uniplan.app.util.AppearanceSettingsTest" time="0.043" />
+  </testsuite>

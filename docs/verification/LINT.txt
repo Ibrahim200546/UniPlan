@@ -1,0 +1,156 @@
+<PROJECT>\app\build.gradle:56: Warning: A newer version of androidx.appcompat:appcompat than 1.7.0 is available: 1.8.0 [GradleDependency]
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:57: Warning: A newer version of com.google.android.material:material than 1.12.0 is available: 1.14.0 [GradleDependency]
+    implementation 'com.google.android.material:material:1.12.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:58: Warning: A newer version of androidx.constraintlayout:constraintlayout than 2.2.1 is available: 2.2.2 [GradleDependency]
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:59: Warning: A newer version of androidx.activity:activity than 1.10.1 is available: 1.13.0 [GradleDependency]
+    implementation 'androidx.activity:activity:1.10.1'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:60: Warning: A newer version of androidx.fragment:fragment than 1.8.6 is available: 1.9.1 [GradleDependency]
+    implementation 'androidx.fragment:fragment:1.8.6'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:63: Warning: A newer version of androidx.navigation:navigation-fragment than 2.8.9 is available: 2.10.2 [GradleDependency]
+    implementation 'androidx.navigation:navigation-fragment:2.8.9'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:64: Warning: A newer version of androidx.navigation:navigation-ui than 2.8.9 is available: 2.10.2 [GradleDependency]
+    implementation 'androidx.navigation:navigation-ui:2.8.9'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:65: Warning: A newer version of androidx.lifecycle:lifecycle-viewmodel-savedstate than 2.8.7 is available: 2.11.0 [GradleDependency]
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:66: Warning: A newer version of androidx.lifecycle:lifecycle-livedata than 2.8.7 is available: 2.11.0 [GradleDependency]
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:67: Warning: A newer version of androidx.room:room-runtime than 2.8.4 is available: 2.8.5 [GradleDependency]
+    implementation 'androidx.room:room-runtime:2.8.4'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:68: Warning: A newer version of androidx.room:room-compiler than 2.8.4 is available: 2.8.5 [GradleDependency]
+    annotationProcessor 'androidx.room:room-compiler:2.8.4'
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:70: Warning: A newer version of com.google.firebase:firebase-bom than 34.4.0 is available: 35.1.0 [GradleDependency]
+    firebaseImplementation platform('com.google.firebase:firebase-bom:34.4.0')
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:74: Warning: A newer version of androidx.test:core than 1.6.1 is available: 1.7.0 [GradleDependency]
+    testImplementation 'androidx.test:core:1.6.1'
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:76: Warning: A newer version of androidx.test:runner than 1.6.2 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:77: Warning: A newer version of androidx.test:rules than 1.6.1 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test:rules:1.6.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:78: Warning: A newer version of androidx.test.ext:junit than 1.2.1 is available: 1.3.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:79: Warning: A newer version of androidx.test.espresso:espresso-core than 3.6.1 is available: 3.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:80: Warning: A newer version of androidx.test.uiautomator:uiautomator than 2.3.0 is available: 2.4.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\build.gradle:82: Warning: A newer version of androidx.room:room-testing than 2.8.4 is available: 2.8.5 [GradleDependency]
+    androidTestImplementation 'androidx.room:room-testing:2.8.4'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+<PROJECT>\app\src\main\java\kz\uniplan\app\ui\schedule\LessonAdapter.java:23: Warning: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
+    public void submit(List<LessonEntity> items,List<SubjectEntity> subjects){this.items=new ArrayList<>(items);this.subjects=subjects;notifyDataSetChanged();}
+                                                                                                                                       ~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\java\kz\uniplan\app\ui\notes\NoteAdapter.java:20: Warning: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
+    void submit(List<NoteEntity> values) { items.clear(); items.addAll(values); notifyDataSetChanged(); }
+                                                                                ~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\java\kz\uniplan\app\ui\tasks\TaskAdapter.java:22: Warning: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
+        this.items=new ArrayList<>(items); this.subjects=subjects; notifyDataSetChanged();
+                                                                   ~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "NotifyDataSetChanged":
+   The RecyclerView adapter's onNotifyDataSetChanged method does not specify
+   what about the data set has changed, forcing any observers to assume that
+   all existing items and structure may no longer be valid. `LayoutManager`s
+   will be forced to fully rebind and relayout all visible views.
+
+<PROJECT>\app\src\main\res\layout\activity_auth.xml:1: Warning: Possible overdraw: Root element paints background ?attr/colorSurface with a theme that also paints a background (inferred theme is @style/Theme.UniPlan) [Overdraw]
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="?attr/colorSurface"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp"><ImageView android:layout_width="64dp" android:layout_height="64dp" android:src="@drawable/ic_logo" android:contentDescription="@string/brand_description"/><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/app_name" android:textSize="18sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" /><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/auth_title" android:textSize="30sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" /><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/auth_subtitle" android:textSize="16sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:id="@+id/subtitle"/><LinearLayout android:id="@+id/demoPanel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/demo_mode" android:textSize="18sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" /><com.google.android.material.button.MaterialButton android:id="@+id/demoOne" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/auth_demo_one" /><com.google.android.material.button.MaterialButton android:id="@+id/demoTwo" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/auth_demo_two" style="@style/Widget.Material3.Button.OutlinedButton"/></LinearLayout><LinearLayout android:id="@+id/credentials" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"><com.google.android.material.textfield.TextInputLayout android:id="@+id/nameBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/name" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/name" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textCapSentences" /></com.google.android.material.textfield.TextInputLayout><com.google.android.material.textfield.TextInputLayout android:id="@+id/emailBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/email" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/email" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textEmailAddress" android:autofillHints="emailAddress"/></com.google.android.material.textfield.TextInputLayout><com.google.android.material.textfield.TextInputLayout android:id="@+id/passwordBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/password" app:endIconMode="password_toggle" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/password" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textPassword" android:saveEnabled="false" android:autofillHints="password"/></com.google.android.material.textfield.TextInputLayout><com.google.android.material.textfield.TextInputLayout android:id="@+id/repeatBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/auth_repeat" app:endIconMode="password_toggle" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/repeat" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textPassword" android:saveEnabled="false" android:importantForAutofill="no"/></com.google.android.material.textfield.TextInputLayout><com.google.android.material.button.MaterialButton android:id="@+id/submit" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/auth_sign_in" /><com.google.android.material.button.MaterialButton android:id="@+id/toggle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/auth_create_account" style="@style/Widget.Material3.Button.TextButton"/><com.google.android.material.button.MaterialButton android:id="@+id/reset" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/auth_reset" style="@style/Widget.Material3.Button.TextButton"/></LinearLayout><ProgressBar android:id="@+id/progress" android:layout_width="48dp" android:layout_height="48dp" android:layout_gravity="center_horizontal" android:visibility="gone"/><com.google.android.material.button.MaterialButton android:id="@+id/language" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/switch_russian" style="@style/Widget.Material3.Button.TextButton"/></LinearLayout></androidx.core.widget.NestedScrollView>
+                                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\layout\activity_main.xml:1: Warning: Possible overdraw: Root element paints background ?attr/colorSurface with a theme that also paints a background (inferred theme is @style/Theme.UniPlan) [Overdraw]
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="?attr/colorSurface">
+                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\layout\fragment_profile.xml:1: Warning: Possible overdraw: Root element paints background ?attr/colorSurface with a theme that also paints a background (inferred theme is @style/Theme.UniPlan) [Overdraw]
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="?attr/colorSurface"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp"><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/profile_details" android:textSize="24sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" /><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/email" android:textSize="14sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:id="@+id/email"/><com.google.android.material.textfield.TextInputLayout android:id="@+id/nameBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/name" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/name" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textCapSentences" /></com.google.android.material.textfield.TextInputLayout><com.google.android.material.textfield.TextInputLayout android:id="@+id/groupBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/group" ><com.google.android.material.textfield.TextInputEditText android:id="@+id/group" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:inputType="textCapSentences" /></com.google.android.material.textfield.TextInputLayout><com.google.android.material.button.MaterialButton android:id="@+id/saveProfile" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/save" /><ProgressBar android:id="@+id/progress" android:layout_width="48dp" android:layout_height="48dp" android:visibility="gone"/><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/profile_settings" android:textSize="24sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" /><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/profile_theme" android:textSize="14sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:labelFor="@id/theme"/><Spinner android:id="@+id/theme" android:layout_width="match_parent" android:layout_height="56dp" android:contentDescription="@string/profile_theme"/><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/profile_language" android:textSize="14sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:labelFor="@id/language"/><Spinner android:id="@+id/language" android:layout_width="match_parent" android:layout_height="56dp" android:contentDescription="@string/profile_language"/><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/profile_note_layout" android:textSize="14sp" android:layout_marginTop="12dp" android:layout_marginBottom="8dp" android:labelFor="@id/noteLayout"/><Spinner android:id="@+id/noteLayout" android:layout_width="match_parent" android:layout_height="56dp" android:contentDescription="@string/profile_note_layout"/><com.google.android.material.button.MaterialButton android:id="@+id/subjects" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/manage_subjects" style="@style/Widget.Material3.Button.OutlinedButton"/><com.google.android.material.button.MaterialButton android:id="@+id/seed" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/profile_seed" style="@style/Widget.Material3.Button.OutlinedButton"/><com.google.android.material.button.MaterialButton android:id="@+id/about" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/about_title" style="@style/Widget.Material3.Button.OutlinedButton"/><com.google.android.material.button.MaterialButton android:id="@+id/learn" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/profile_learn" style="@style/Widget.Material3.Button.OutlinedButton"/><com.google.android.material.button.MaterialButton android:id="@+id/signOut" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/sign_out" style="@style/Widget.Material3.Button.OutlinedButton"/></LinearLayout></androidx.core.widget.NestedScrollView>
+                                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\layout\item_core_subject.xml:2: Warning: Possible overdraw: Root element paints background ?attr/selectableItemBackground with a theme that also paints a background (inferred theme is @style/Theme.UniPlan) [Overdraw]
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="80dp" android:padding="12dp" android:background="?attr/selectableItemBackground">
+                                                                                                                                                                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+<PROJECT>\app\src\main\res\drawable\ic_back.xml:1: Warning: The resource R.drawable.ic_back appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#3D5C52" android:fillType="evenOdd" android:pathData="M20,11H7l5,-5l-1.4,-1.4L3.2,12l7.4,7.4L12,18l-5,-5h13z"/></vector>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings.xml:14: Warning: The resource R.string.back appears to be unused [UnusedResources]
+<string name="back">Артқа</string>
+        ~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings.xml:25: Warning: The resource R.string.empty appears to be unused [UnusedResources]
+<string name="empty">Әзірге жазба жоқ</string>
+        ~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings.xml:57: Warning: The resource R.string.auth_configuration appears to be unused [UnusedResources]
+<string name="auth_configuration">Кіру қызметі әлі бапталмаған. Жобаның іске қосу нұсқаулығын қараңыз.</string>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings.xml:58: Warning: The resource R.string.auth_network appears to be unused [UnusedResources]
+<string name="auth_network">Қызметке қосылу мүмкін болмады. Интернет байланысын тексеріңіз.</string>
+        ~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings.xml:59: Warning: The resource R.string.auth_failed appears to be unused [UnusedResources]
+<string name="auth_failed">Кіру немесе тіркелу орындалмады. Деректерді тексеріп, кейінірек қайталаңыз.</string>
+        ~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings_core.xml:32: Warning: The resource R.string.core_delete_task appears to be unused [UnusedResources]
+    <string name="core_delete_task">Тапсырманы жою</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~
+<PROJECT>\app\src\main\res\values\strings_core.xml:62: Warning: The resource R.string.core_seven_days appears to be unused [UnusedResources]
+    <string name="core_seven_days">Алдағы 7 күн</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+0 errors, 34 warnings
+

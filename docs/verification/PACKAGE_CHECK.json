@@ -1,0 +1,19 @@
+{
+  "xml": "all parsed",
+  "json": "all parsed",
+  "locale_resource_names": 213,
+  "localizations": "Kazakh default and Russian keys match",
+  "kotlin_sources": 0,
+  "files": 159,
+  "wrapper": "real GradleWrapperMain.class present",
+  "excluded": [
+    "build",
+    ".gradle",
+    ".idea",
+    "local.properties",
+    "google-services.json",
+    "keystores",
+    "APKs"
+  ],
+  "zip_crc": "verified by packager after writing"
+}

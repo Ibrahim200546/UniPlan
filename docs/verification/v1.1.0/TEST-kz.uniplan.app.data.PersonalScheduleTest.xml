@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="kz.uniplan.app.data.PersonalScheduleTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-30T05:54:21" hostname="DESKTOP-9J43I6R" time="7.497">
+  <properties />
+  <testcase name="repeatSessionsDoNotDuplicateOrResurrectDeletedLessonsOrResetProfile" classname="kz.uniplan.app.data.PersonalScheduleTest" time="6.304" />
+  <testcase name="versionOneMigrationPreservesDataAndValidatesTheNewRoomSchema" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.32" />
+  <testcase name="firstPersonalSessionImportsAll23ExactRowsAndSevenSubjects" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.179" />
+  <testcase name="importAddsMissingDataAndPreservesExistingRowsAndSampleMarker" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.18" />
+  <testcase name="lessonMetadataIsCopiedSavedAndValidatedWithoutChangingUrl" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.211" />
+  <testcase name="failedImportRollsBackEveryDatasetRowAndCanBeRetried" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.145" />
+  <testcase name="personalImportIsRestrictedToTheFirstDemoIdentity" classname="kz.uniplan.app.data.PersonalScheduleTest" time="0.157" />
+  </testsuite>

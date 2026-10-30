@@ -1,0 +1,28 @@
+<resources>
+    <string name="appearance_title">Безендіру</string>
+    <string name="appearance_intro">Фонды, карточкаларды және негізгі түсті өзіңіз таңдаңыз. Өзгерістер «Қолдану» түймесін басқаннан кейін сақталады.</string>
+    <string name="appearance_light">Жарық тақырып</string>
+    <string name="appearance_dark">Қараңғы тақырып</string>
+    <string name="appearance_light_hint">Жарық тақырыпты баптау. Қараңғы тақырыптың түстері бөлек сақталады.</string>
+    <string name="appearance_dark_hint">Қараңғы тақырыпты баптау. Жарық тақырыптың түстері бөлек сақталады.</string>
+    <string name="appearance_preset">Дайын түстер жиынтығы</string>
+    <string name="appearance_background">Экран фоны · #RRGGBB</string>
+    <string name="appearance_card">Карточкалар түсі · #RRGGBB</string>
+    <string name="appearance_accent">Негізгі түс · #RRGGBB</string>
+    <string name="appearance_hex_error">Алты таңбалы HEX кодын енгізіңіз, мысалы #3D5C52</string>
+    <string name="appearance_contrast_hint">Мәтін түсі оқуға ыңғайлы болуы үшін автоматты таңдалады. Жіңішке белгілердің негізгі түсі қажет болса түзетіледі.</string>
+    <string name="appearance_corner">Бұрыштарды дөңгелектеу</string>
+    <string name="appearance_corner_value">Бұрыштарды дөңгелектеу: %1$d dp</string>
+    <string name="appearance_live_preview">Тікелей алдын ала қарау</string>
+    <string name="appearance_preview_heading">Менің оқу күнім</string>
+    <string name="appearance_preview_title">Деректер қоры</string>
+    <string name="appearance_preview_body">Сабаққа дайындық және қысқаша жазбалар. Түстерді осы үлгіде тексеріңіз.</string>
+    <string name="appearance_preview_button">Үлгі түймесін тексеру</string>
+    <string name="appearance_preview_action">Бұл — таңдалған түстердің үлгісі</string>
+    <string name="appearance_apply">Қолдану және сақтау</string>
+    <string name="appearance_saved">Таңдалған тақырыптың безендірілуі сақталды</string>
+    <string name="appearance_reset">Бастапқы түстерге қайтару</string>
+    <string name="appearance_reset_message">Таңдалған жарық немесе қараңғы тақырыптың бастапқы түстерін қалпына келтіру керек пе?</string>
+    <string name="appearance_reset_done">Таңдалған тақырыптың бастапқы түстері қалпына келтірілді</string>
+    <string-array name="appearance_presets"><item>Өз түстерім</item><item>Орман</item><item>Мұхит</item><item>Құм</item><item>Жұпаргүл</item></string-array>
+</resources>

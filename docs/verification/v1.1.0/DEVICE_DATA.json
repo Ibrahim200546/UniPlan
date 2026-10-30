@@ -1,0 +1,38 @@
+{
+  "device": "emulator-5556",
+  "database_version": 2,
+  "exact_user_rows_verified": 23,
+  "profile": {
+    "ownerUid": "demo-1",
+    "displayName": "Ибраһим",
+    "studyGroup": "АЖҚ-321"
+  },
+  "total_demo1_lessons": 23,
+  "total_demo1_subjects": 7,
+  "earlier_snapshot_comparison": {
+    "subjects": {
+      "baseline": 1,
+      "matching": 0
+    },
+    "tasks": {
+      "baseline": 0,
+      "matching": 0
+    },
+    "lessons": {
+      "baseline": 0,
+      "matching": 0
+    },
+    "notes": {
+      "baseline": 0,
+      "matching": 0
+    },
+    "seed_state": {
+      "baseline": 0,
+      "matching": 0
+    }
+  },
+  "legacy_preservation_check": "Covered by real v1-to-v2 SQLite migration tests; no claim based on earlier device snapshot",
+  "import_marker_count": 1,
+  "fixture": "Original user table in personal_schedule_expected.json",
+  "status": "PASS"
+}

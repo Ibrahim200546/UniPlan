@@ -1,0 +1,7 @@
+<resources>
+    <item name="appearance_palette_tag" type="id" />
+    <item name="appearance_button_kind" type="id" />
+    <item name="appearance_preview_root" type="id" />
+    <item name="appearance_screen_root" type="id" />
+    <item name="appearance_window_palette" type="id" />
+</resources>

@@ -1,0 +1,28 @@
+<resources>
+    <string name="appearance_title">Оформление</string>
+    <string name="appearance_intro">Выберите фон, цвет карточек и акцент. Изменения сохраняются после нажатия «Применить».</string>
+    <string name="appearance_light">Светлая тема</string>
+    <string name="appearance_dark">Тёмная тема</string>
+    <string name="appearance_light_hint">Настройка светлой темы. Цвета тёмной темы сохраняются отдельно.</string>
+    <string name="appearance_dark_hint">Настройка тёмной темы. Цвета светлой темы сохраняются отдельно.</string>
+    <string name="appearance_preset">Готовая палитра</string>
+    <string name="appearance_background">Фон экрана · #RRGGBB</string>
+    <string name="appearance_card">Цвет карточек · #RRGGBB</string>
+    <string name="appearance_accent">Акцент · #RRGGBB</string>
+    <string name="appearance_hex_error">Введите шесть знаков HEX, например #3D5C52</string>
+    <string name="appearance_contrast_hint">Цвет текста подбирается автоматически для читаемости. При необходимости акцент тонких элементов корректируется.</string>
+    <string name="appearance_corner">Скругление углов</string>
+    <string name="appearance_corner_value">Скругление углов: %1$d dp</string>
+    <string name="appearance_live_preview">Предпросмотр в реальном времени</string>
+    <string name="appearance_preview_heading">Мой учебный день</string>
+    <string name="appearance_preview_title">Базы данных</string>
+    <string name="appearance_preview_body">Подготовка к занятию и краткие заметки. Проверьте выбранные цвета на этом примере.</string>
+    <string name="appearance_preview_button">Проверить пример кнопки</string>
+    <string name="appearance_preview_action">Это пример выбранного оформления</string>
+    <string name="appearance_apply">Применить и сохранить</string>
+    <string name="appearance_saved">Оформление выбранной темы сохранено</string>
+    <string name="appearance_reset">Вернуть исходные цвета</string>
+    <string name="appearance_reset_message">Восстановить исходные цвета выбранной светлой или тёмной темы?</string>
+    <string name="appearance_reset_done">Исходные цвета выбранной темы восстановлены</string>
+    <string-array name="appearance_presets"><item>Своя палитра</item><item>Лес</item><item>Океан</item><item>Песок</item><item>Лаванда</item></string-array>
+</resources>

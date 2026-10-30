@@ -1,0 +1,44 @@
+[
+  {
+    "name": "kz.uniplan.app.data.PersonalScheduleTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "kz.uniplan.app.data.RepositoryRobolectricTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "kz.uniplan.app.domain.ValidationTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "kz.uniplan.app.ui.NavigationSmokeTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "kz.uniplan.app.util.AppearancePaletteTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "kz.uniplan.app.util.AppearanceSettingsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+]
