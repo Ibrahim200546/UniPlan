@@ -19,4 +19,6 @@ public interface AuthRepository {
     void register(String name, String email, String password, Callback callback);
     void resetPassword(String email, Callback callback);
     void signOut();
+    /** Cloud-only token access. Call on a worker thread; implementations may refresh tokens. */
+    default String accessToken() throws Exception { throw new IllegalStateException("Cloud authentication is not configured"); }
 }
