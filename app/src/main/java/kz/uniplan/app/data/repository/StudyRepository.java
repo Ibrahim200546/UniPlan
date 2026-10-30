@@ -18,6 +18,8 @@ import kz.uniplan.app.data.local.AppDatabase;
 import kz.uniplan.app.data.local.dao.StudyDao;
 import kz.uniplan.app.data.local.entity.*;
 import kz.uniplan.app.util.Validation;
+import kz.uniplan.app.data.sync.CloudSync;
+import kz.uniplan.app.data.auth.SupabaseHttp;
 
 /** Single owner-scoped boundary for UI. Input objects are copied before enqueueing. */
 public final class StudyRepository {
@@ -39,6 +41,7 @@ public final class StudyRepository {
     private final LiveData<ProfileEntity> profile;
     // Application-scoped repository: observer intentionally lives with the auth service.
     private final Observer<Session> profileInitializer;
+    private CloudSync cloud;
 
     public StudyRepository(AppDatabase db, AuthRepository auth) {
         this.db = db; this.dao = db.studyDao(); this.auth = auth;
@@ -68,6 +71,12 @@ public final class StudyRepository {
                 initial.ownerUid = user.uid;
                 initial.displayName = user.displayName == null ? "" : user.displayName;
                 dao.insertProfile(initial);
+                if(dao.syncState(user.uid)==null) {
+                    SyncStateEntity sync=new SyncStateEntity(); sync.ownerUid=user.uid;
+                    sync.dirty=!dao.subjects(user.uid).isEmpty() || !dao.tasks(user.uid).isEmpty()
+                            || !dao.lessons(user.uid).isEmpty() || !dao.notes(user.uid).isEmpty();
+                    dao.saveSyncState(sync);
+                }
             });
         };
         auth.session().observeForever(profileInitializer);
@@ -92,6 +101,7 @@ public final class StudyRepository {
     public LiveData<List<LessonEntity>> lessons() { return lessons; }
     public LiveData<List<NoteEntity>> notes() { return notes; }
     public LiveData<ProfileEntity> profile() { return profile; }
+    public void loadProfile(Result<ProfileEntity> callback) { execute(false,uid->present(dao.profile(uid)).copy(),callback); }
 
     private <T> void execute(boolean transaction, Work<T> action, Result<T> callback) {
         final Session captured = auth.current();
@@ -102,7 +112,13 @@ public final class StudyRepository {
                 if (auth.current() != captured) throw new Failure("session");
                 if (transaction) {
                     // Room's Callable transaction preserves all-or-nothing behavior.
-                    value = db.runInTransaction(() -> action.run(captured.uid));
+                    value = db.runInTransaction(() -> {
+                        T changed=action.run(captured.uid);
+                        SyncStateEntity sync=dao.syncState(captured.uid);
+                        if(sync==null) { sync=new SyncStateEntity(); sync.ownerUid=captured.uid; }
+                        sync.dirty=true; dao.saveSyncState(sync);
+                        return changed;
+                    });
                 } else value = action.run(captured.uid);
             } catch (Exception failure) {
                 Throwable cause = failure;
@@ -118,6 +134,18 @@ public final class StudyRepository {
         });
     }
     private static <T> T present(T value) throws Failure { if (value == null) throw new Failure("missing"); return value; }
+    public void configureCloud(SupabaseHttp.Transport transport) { cloud=new CloudSync(db,auth,transport); }
+    public void synchronize(CloudSync.Conflict choice,boolean keepLocal,Result<CloudSync.Conflict> callback) {
+        final Session captured=auth.current();
+        if(captured==null || cloud==null) { main.post(()->callback.done(null,"session")); return; }
+        worker.execute(()->{
+            CloudSync.Conflict result=null; String error=null;
+            try { if(auth.current()!=captured) throw new Failure("session"); result=cloud.sync(captured,choice,keepLocal); }
+            catch(Exception failure) { error="sync"; }
+            CloudSync.Conflict conflict=result; String failure=error;
+            main.post(()->callback.done(auth.current()==captured?conflict:null,auth.current()==captured?failure:"session"));
+        });
+    }
     private static void valid(boolean condition) throws Failure { if (!condition) throw new Failure("validation"); }
     private static void inputOwner(String input,String uid) throws Failure {
         if (input != null && !input.isEmpty() && !uid.equals(input)) throw new Failure("session");

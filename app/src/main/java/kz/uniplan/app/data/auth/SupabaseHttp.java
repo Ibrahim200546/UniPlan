@@ -31,8 +31,16 @@ public final class SupabaseHttp {
     public SupabaseHttp(String baseUrl,String publishableKey){
         this.baseUrl=baseUrl==null?"":baseUrl.replaceAll("/+$","");this.publishableKey=publishableKey==null?"":publishableKey;
     }
+    public boolean configured() {
+        try {
+            java.net.URI uri=new java.net.URI(baseUrl);
+            return "https".equals(uri.getScheme()) && uri.getHost()!=null && uri.getRawUserInfo()==null
+                    && (uri.getPath()==null || uri.getPath().isEmpty()) && uri.getQuery()==null && uri.getFragment()==null
+                    && publishableKey.matches("sb_publishable_[A-Za-z0-9_-]+");
+        } catch(Exception invalid) { return false; }
+    }
     public Response request(String method,String path,JSONObject payload,String bearer) throws IOException {
-        if(!baseUrl.startsWith("https://")||publishableKey.isEmpty()||path==null||!path.startsWith("/"))throw new IOException("Supabase configuration unavailable");
+        if(!configured()||path==null||!path.startsWith("/")||path.startsWith("//"))throw new IOException("Supabase configuration unavailable");
         URL url=new URL(baseUrl+path);
         if(url.getUserInfo()!=null)throw new IOException("Invalid API URL");
         HttpURLConnection connection=(HttpURLConnection)url.openConnection();

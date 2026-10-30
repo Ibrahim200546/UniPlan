@@ -1,0 +1,21 @@
+<resources>
+    <string name="auth_confirm_email">Хаттағы сілтеме арқылы поштаңызды растаңыз. Хатты осы құрылғыда ашып, жүйеге кіріңіз. «Спам» қалтасын тексеріңіз.</string>
+    <string name="auth_resend">Растау хатын қайта жіберу</string>
+    <string name="auth_rate_limit">Әрекет тым көп. Біраз күтіп, қайталаңыз.</string>
+    <string name="auth_link_expired">Сілтеме жарамсыз немесе басқа құрылғыда сұралған. Осы құрылғыда жаңа хат сұраңыз.</string>
+    <string name="auth_session_expired">Сессия аяқталды. Қайта кіріңіз.</string>
+    <string name="auth_new_password">Жаңа құпиясөзді сақтау</string>
+    <string name="sync_title">Бұлтта сақтау</string>
+    <string name="sync_help">Профильді, пәндерді, тапсырмаларды, кесте мен жазбаларды аккаунтыңызға сақтайды. Өзгерткеннен кейін немесе басқа құрылғыда басыңыз. Интернетсіз деректер осында қалады.</string>
+    <string name="sync_now">Синхрондау</string>
+    <string name="sync_busy">Синхрондалуда…</string>
+    <string name="sync_done">Деректер синхрондалды</string>
+    <string name="sync_error">Синхрондау орындалмады. Жергілікті деректер сақталды. Интернет пен қызмет баптауын тексеріңіз.</string>
+    <string name="sync_conflict">Деректер әртүрлі</string>
+    <string name="sync_conflict_help">Бұлтта және құрылғыда өзгерістер бар. Нұсқаны таңдаңыз. Ауыстыру осы аккаунттың барлық оқу жазбаларына әсер етеді. Таңдағанға дейін екі нұсқа да сақталады.</string>
+    <string name="sync_keep_local">Құрылғы нұсқасын сақтау</string>
+    <string name="sync_keep_remote">Бұлт нұсқасын жүктеу</string>
+    <string name="sync_replace_title">Деректерді ауыстыру керек пе?</string>
+    <string name="sync_replace_local">Құрылғыдағы нұсқа бұлттағы деректерді ауыстырады. Жалғастыру керек пе?</string>
+    <string name="sync_replace_remote">Бұлттағы нұсқа осы құрылғыдағы деректерді ауыстырады. Жалғастыру керек пе?</string>
+</resources>

@@ -15,10 +15,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 
 /** Token snapshots only. The AES key remains in Android Keystore; no plaintext fallback. */
-public final class SecureSessionStore {
+public final class SecureSessionStore implements SessionStorage {
     private static final String KEY_ALIAS="uniplan_supabase_session_v1";
     private final SharedPreferences preferences;
-    public SecureSessionStore(Context context){preferences=context.getApplicationContext().getSharedPreferences("secure_supabase_session",Context.MODE_PRIVATE);}
+    public SecureSessionStore(Context context){this(context,"session");}
+    public SecureSessionStore(Context context,String scope){preferences=context.getApplicationContext().getSharedPreferences("secure_supabase_"+scope,Context.MODE_PRIVATE);}
     private SecretKey key() throws GeneralSecurityException,IOException {
         KeyStore keys=KeyStore.getInstance("AndroidKeyStore");keys.load(null);
         if(keys.containsAlias(KEY_ALIAS))return (SecretKey)keys.getKey(KEY_ALIAS,null);
@@ -40,5 +41,12 @@ public final class SecureSessionStore {
             return new String(cipher.doFinal(Base64.decode(payload,Base64.NO_WRAP)),StandardCharsets.UTF_8);
         }catch(IllegalArgumentException invalid){throw new GeneralSecurityException("Invalid encrypted session",invalid);}
     }
-    public synchronized void clear() throws IOException {if(!preferences.edit().clear().commit())throw new IOException("Cannot clear encrypted session");}
+    public synchronized void clear() throws IOException {
+        if(!preferences.edit().clear().commit()) {
+            // If preferences cannot be written, invalidate ciphertext so a restart cannot revive it.
+            try { KeyStore keys=KeyStore.getInstance("AndroidKeyStore"); keys.load(null); keys.deleteEntry(KEY_ALIAS); }
+            catch(GeneralSecurityException failure) { throw new IOException("Cannot invalidate encrypted session",failure); }
+            throw new IOException("Cannot clear encrypted session");
+        }
+    }
 }

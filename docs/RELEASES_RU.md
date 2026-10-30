@@ -1,41 +1,42 @@
-> СТАТУС: это проект будущей автоматизации. Файл сохранён как docs/android-release.yml.draft и не запускается GitHub Actions. Требуется завершить основной Supabase-вариант, параметры Gradle и настройку ключа подписи. Выпуски пока не опубликованы.
+# GitHub Actions и APK Releases
 
-# Автоматические APK в GitHub Releases
+В .github/workflows/ находятся три определения workflow:
 
-После каждого push в `main` workflow `.github/workflows/android-release.yml` запускает unit tests и собирает основное приложение с настоящей авторизацией. Ручной запуск доступен в **Actions → Android APK Release → Run workflow** для ветки `main`.
-
-Постоянная ссылка после первой успешной публикации: [скачать UniPlan.apk](https://github.com/Ibrahim200546/UniPlan/releases/latest/download/UniPlan.apk). [Все выпуски](https://github.com/Ibrahim200546/UniPlan/releases) и [результаты workflow](https://github.com/Ibrahim200546/UniPlan/actions/workflows/android-release.yml) доступны отдельно. Пока настройка и первая публикация не завершены, ссылка на APK может возвращать 404.
-
-## Однократная настройка репозитория
-
-В **Settings → Secrets and variables → Actions** добавьте:
-
-| Тип | Имя | Значение |
+| Workflow | Запуск | Результат |
 |---|---|---|
-| Secret | `ANDROID_DEBUG_KEYSTORE_BASE64` | Base64 **существующего** ключа подписи UniPlan; alias `androiddebugkey`, пароль хранилища `android` |
-| Variable | `SUPABASE_URL` | HTTPS URL пользовательского проекта Supabase |
-| Variable | `SUPABASE_PUBLISHABLE_KEY` | Публичный клиентский ключ с префиксом `sb_publishable_` |
+| Android CI | PR, push в main/codex, вручную | SQL/RLS-тест, Android unit tests, lint и тестовый APK |
+| Supabase Migration | Вручную на main | Версионные миграции, security advisors, Android callback, проверка API |
+| Android APK Release | Push в main или вручную на main | Проверенный APK и SHA256SUMS в GitHub Releases |
 
-Приватный `service_role` или secret API key нельзя помещать в Android-приложение. Публичный publishable key включается в APK и не считается серверным секретом. Ограничения доступа должны обеспечиваться настройками авторизации и политиками сервиса. [Типы ключей Supabase](https://supabase.com/docs/guides/api/api-keys).
+## Что настроить один раз
 
-Ключ подписи не заменяется автоматически. Ожидаемый SHA-256 сертификата:
+Публичный Supabase URL и publishable key уже заданы для UniPlan. При необходимости их переопределяют переменные репозитория SUPABASE_URL и SUPABASE_PUBLISHABLE_KEY. Перед выпуском примените [миграцию и настройку Auth](SUPABASE_SETUP_RU.md).
 
-```text
-1b5edf62b174211a13ccc32883cd74006cca47cb0fb368ae839b9ed6e0651a42
-```
+Для подписи добавьте secret **ANDROID_DEBUG_KEYSTORE_BASE64** — Base64 прежнего ключа UniPlan, alias androiddebugkey, пароль android. Он не добавляется в git или Release, восстанавливается только на runner и удаляется после сборки. Это учебный APK для прямой установки, подписанный постоянным debug-ключом; публикация в Google Play не настраивается.
 
-Отсутствующий secret, неверный сертификат или недопустимая конфигурация приводят к явной ошибке. Не создавайте новый ключ вместо прежнего: для обновления установленного приложения нужны тот же applicationId и совместимая подпись. Ключ нельзя коммитить в репозиторий или добавлять к Release. Он восстанавливается только на временном runner и удаляется в завершающем шаге.
+Ожидаемый SHA-256 сертификата прежних выпусков:
 
-## Что делает workflow
+    1b5edf62b174211a13ccc32883cd74006cca47cb0fb368ae839b9ed6e0651a42
 
-1. Read-only job `build` получает точный commit, использует Ubuntu 24.04, Temurin JDK 17, Android SDK 35 / Build-Tools 35.0.0 и Gradle Wrapper проекта.
-2. Проверяет публичную конфигурацию, восстанавливает прежний ключ и сверяет сертификат до сборки.
-3. Запускает `:app:testDebugUnitTest` и `:app:assembleDebug`. Demo-вариант не публикуется. Параметр `ciBuildNumber` задаёт `versionCode = 1000 + номер запуска`; versionName получает суффикс сборки.
-4. Проверяет подпись готового APK через `apksigner`, applicationId и versionCode. Формирует `UniPlan.apk` и `SHA256SUMS`, передаёт их отдельному job как артефакт.
-5. Job `publish` с `contents: write` создаёт **черновик** `build-N` на SHA собранного commit. Сначала загружает оба файла, затем публикует выпуск и помечает его Latest. Токен записи доступен только этому job, исходники приложения в нём не выполняются.
+Если владелец **намеренно** переходит на другую подпись, задайте переменную ANDROID_SIGNING_CERT_SHA256 (нижний регистр, без двоеточий). Другой сертификат не позволит обновить прежнюю установку Android; автоматически генерировать замену или скрывать несовпадение workflow не будет. Секрет и ожидаемый отпечаток должны относиться к одному ключу.
 
-Новый push отменяет устаревший выполняющийся workflow. Перед созданием и перед публикацией проверяется текущая вершина `main`; устаревшая сборка не должна заменять Latest. При отмене во время загрузки может остаться черновик, но не опубликованный выпуск без нужных файлов. Повторный запуск уже опубликованного `build-N` оставляет его неизменным; файлы разрешено заменять только в черновике с тем же целевым SHA. [Concurrency GitHub Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency), [создание выпуска](https://cli.github.com/manual/gh_release_create), [публикация черновика](https://cli.github.com/manual/gh_release_edit).
+Команда просмотра отпечатка:
 
-APK подписан существующим debug-ключом и предназначен для прямой установки учебного приложения. Это не публикация в Google Play. Успех workflow означает сборку, unit tests и проверку подписи; он не доказывает запуск UI на физическом устройстве или сквозную проверку настоящего Supabase.
+    keytool -list -v -keystore /path/to/existing/debug.keystore -alias androiddebugkey
 
-Для проверки загруженного файла сравните SHA-256 с `SHA256SUMS`, приложенным к тому же выпуску. На Windows можно использовать `Get-FileHash .\UniPlan.apk -Algorithm SHA256`. Сведения о ручных проверках приложения находятся в `TEST_REPORT.md`.
+Не публикуйте содержимое ключа или Base64 в issue, PR либо чате. Используйте форму GitHub Actions Secrets или gh secret set с передачей значения через stdin.
+
+## Порядок выпуска
+
+1. Настроить сервер и прежний ключ подписи.
+2. Дождаться успешного Android CI.
+3. Запустить **Android APK Release** на main или отправить изменения в main.
+4. Проверить опубликованные UniPlan.apk и SHA256SUMS на [странице Releases](https://github.com/Ibrahim200546/UniPlan/releases).
+
+Сборка проверяет публичную конфигурацию и реальное наличие закрытой серверной схемы, выполняет SQL-тесты, unit tests обоих вариантов и lint основного варианта. Затем проверяет подпись APK, applicationId kz.uniplan.app и versionCode 1000 + github.run_number.
+
+Отдельный job с contents: write получает только готовые артефакты. Он создаёт черновик build-N, загружает оба файла и только затем публикует выпуск. Устаревшая сборка не заменяет Latest; уже опубликованный build-N повторный запуск не изменяет. Actions закреплены по проверенным commit SHA. [Разрешения workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions), [создание Release](https://cli.github.com/manual/gh_release_create).
+
+Постоянная ссылка появится после первой успешной публикации: [UniPlan.apk](https://github.com/Ibrahim200546/UniPlan/releases/latest/download/UniPlan.apk). До этого она может возвращать 404. Артефакт **Android CI** имеет временную подпись runner и предназначен для тестирования, а не обновления прежних выпусков.
+
+Успешная сборка не доказывает получение реальных email, доставку SMTP или работу на физическом устройстве. Эти проверки отдельно отражаются в [TEST_REPORT.md](TEST_REPORT.md).

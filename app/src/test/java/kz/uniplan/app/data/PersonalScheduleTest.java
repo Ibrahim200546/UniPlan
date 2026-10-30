@@ -235,7 +235,7 @@ public class PersonalScheduleTest {
             } finally { legacy.close(); }
             return null;
         });
-        AppDatabase migrated = Room.databaseBuilder(context, AppDatabase.class, name).addMigrations(AppDatabase.MIGRATION_1_2).build();
+        AppDatabase migrated = Room.databaseBuilder(context, AppDatabase.class, name).addMigrations(AppDatabase.MIGRATION_1_2,AppDatabase.MIGRATION_2_3).build();
         try {
             StudyDao migratedDao = migrated.studyDao();
             LessonEntity old = onDatabase(() -> migratedDao.lesson("demo-1", 301));
@@ -245,6 +245,8 @@ public class PersonalScheduleTest {
             assertEquals("Keep content", onDatabase(() -> migratedDao.note("demo-1", 401)).content);
             assertEquals("Keep description", onDatabase(() -> migratedDao.task("demo-1", 201)).description);
             assertEquals("Old name", onDatabase(() -> migratedDao.profile("demo-1")).displayName);
+            assertTrue(onDatabase(() -> migratedDao.syncState("demo-1")).dirty);
+            assertEquals(0,onDatabase(() -> migratedDao.syncState("demo-1")).revision);
             assertEquals(Integer.valueOf(1), onDatabase(() -> migratedDao.seeded("demo-1")));
             assertEquals(Boolean.TRUE, onDatabase(() -> PersonalSchedule.importOnce(migrated, "demo-1")));
             assertEquals(24, onDatabase(() -> migratedDao.lessons("demo-1")).size());

@@ -15,10 +15,15 @@ public final class AuthViewModel extends AndroidViewModel {
     public final MutableLiveData<Integer> notice=new MutableLiveData<>();
     public AuthViewModel(Application app,SavedStateHandle state) { super(app); this.state=state; auth=((UniPlanApp)app).auth(); }
     public boolean registering() { return Boolean.TRUE.equals(state.get("register")); }
+    public boolean recovering() { return Boolean.TRUE.equals(auth.recovering().getValue()); }
     public void toggle() { state.set("register",!registering()); }
     public void submit(String name,String email,String password,String repeat) {
         if(Boolean.TRUE.equals(busy.getValue())) return;
-        if(!Validation.login(email,password) || (registering() && (name.trim().isEmpty() || !password.equals(repeat)))) { notice.setValue(R.string.auth_validation); return; }
+        if(recovering()) {
+            if(!Validation.password(password) || !password.equals(repeat)) { notice.setValue(R.string.auth_validation); return; }
+            busy.setValue(true); auth.updatePassword(password,error->{ busy.setValue(false); if(error!=null) notice.setValue(error); }); return;
+        }
+        if(!Validation.login(email,password) || (registering() && (!Validation.title(name) || !password.equals(repeat)))) { notice.setValue(R.string.auth_validation); return; }
         if(registering() && password.length()<6) { notice.setValue(R.string.auth_password_policy); return; }
         busy.setValue(true);
         AuthRepository.Callback callback=error->{ busy.setValue(false); if(error!=null) notice.setValue(error); };
@@ -30,4 +35,13 @@ public final class AuthViewModel extends AndroidViewModel {
         busy.setValue(true); auth.resetPassword(email.trim(),error->{ busy.setValue(false); notice.setValue(error==null?R.string.auth_reset_neutral:error); });
     }
     public void demo(int index) { auth.openDemo(index); }
+    public void redirect(String uri) {
+        if(Boolean.TRUE.equals(busy.getValue())) return;
+        busy.setValue(true); auth.handleRedirect(uri,error->{ busy.setValue(false); if(error!=null) notice.setValue(error); });
+    }
+    public void resend(String email) {
+        if(Boolean.TRUE.equals(busy.getValue())) return;
+        if(!Validation.email(email)) { notice.setValue(R.string.auth_validation); return; }
+        busy.setValue(true); auth.resendConfirmation(email.trim(),error->{ busy.setValue(false); if(error!=null) notice.setValue(error); });
+    }
 }

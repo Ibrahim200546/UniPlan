@@ -11,7 +11,7 @@ import kz.uniplan.app.data.local.dao.StudyDao;
 import kz.uniplan.app.data.local.entity.*;
 
 @Database(entities = {ProfileEntity.class, SubjectEntity.class, TaskEntity.class,
-        LessonEntity.class, NoteEntity.class, SeedStateEntity.class, DatasetImportEntity.class}, version = 2, exportSchema = true)
+        LessonEntity.class, NoteEntity.class, SeedStateEntity.class, DatasetImportEntity.class, SyncStateEntity.class}, version = 3, exportSchema = true)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
     public abstract StudyDao studyDao();
@@ -27,10 +27,18 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
+    public static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override public void migrate(@NonNull SupportSQLiteDatabase db) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS sync_state (ownerUid TEXT NOT NULL, revision INTEGER NOT NULL, dirty INTEGER NOT NULL, PRIMARY KEY(ownerUid))");
+            // Existing owners have unsynced data; do not silently replace it on first cloud contact.
+            db.execSQL("INSERT INTO sync_state(ownerUid,revision,dirty) SELECT ownerUid,0,1 FROM profiles");
+        }
+    };
+
     public static AppDatabase get(Context context) {
         if (instance == null) synchronized (AppDatabase.class) {
             if (instance == null) instance = Room.databaseBuilder(context.getApplicationContext(),
-                    AppDatabase.class, "uniplan.db").addMigrations(MIGRATION_1_2).build();
+                    AppDatabase.class, "uniplan.db").addMigrations(MIGRATION_1_2,MIGRATION_2_3).build();
         }
         return instance;
     }
