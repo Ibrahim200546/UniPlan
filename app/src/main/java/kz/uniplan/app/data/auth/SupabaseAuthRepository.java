@@ -184,12 +184,14 @@ public final class SupabaseAuthRepository implements AuthRepository {
             if(!response.successful()) {
                 String code=response.json.optString("error_code");
                 if(response.status==401 || response.status==403 || code.startsWith("refresh_token_") || code.equals("session_not_found")) {
-                    synchronized(lock) { if(epoch==generation) clearLocal(); }
+                    synchronized(lock) { if(epoch==generation && tokens==snapshot) clearLocal(); }
                 }
                 checked(response);
             }
             synchronized(lock) {
                 requireEpoch(generation);
+                // A new login or email callback can replace tokens while refresh is in flight.
+                if(tokens!=snapshot) throw new AuthError(R.string.auth_session_expired);
                 if(!snapshot.getJSONObject("user").getString("id").equals(response.json.getJSONObject("user").getString("id"))) throw new AuthError(R.string.auth_failed);
                 install(response.json,recovery,generation,true);
                 return tokens.getString("access_token");

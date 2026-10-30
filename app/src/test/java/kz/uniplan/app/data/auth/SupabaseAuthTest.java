@@ -79,6 +79,35 @@ public class SupabaseAuthTest {
         while(done.getCount()>0 && System.nanoTime()<deadline) { shadowOf(Looper.getMainLooper()).idle(); Thread.sleep(5); }
         assertEquals(0,done.getCount()); assertNull(auth.current()); assertNull(storage.value);
     }
+    @Test public void lateRefreshCannotReplaceOrClearANewerLogin() throws Exception {
+        String newerUid="22222222-2222-4222-8222-222222222222";
+        for(boolean revoked:new boolean[]{false,true}) {
+            MemoryStore storage=new MemoryStore();
+            JSONObject first=tokens(true),rotated=tokens(false),newer=tokens(false);
+            newer.getJSONObject("user").put("id",newerUid);
+            CountDownLatch entered=new CountDownLatch(1),release=new CountDownLatch(1);
+            SupabaseAuthRepository auth=new SupabaseAuthRepository((method,path,body,bearer)->{
+                if(path.endsWith("password")) return response(body.optString("email").equals("new@example.com")?newer:first);
+                entered.countDown();
+                try { assertTrue(release.await(5,TimeUnit.SECONDS)); } catch(InterruptedException e) { throw new IOException(e); }
+                return revoked?new SupabaseHttp.Response(400,"{\"error_code\":\"refresh_token_not_found\"}"):response(rotated);
+            },storage,new MemoryStore(),PROJECT,true);
+            assertNull(await(cb->auth.signIn("student@example.com","password",cb)));
+            AtomicReference<Exception> failure=new AtomicReference<>();
+            Thread refresh=new Thread(()->{ try { auth.accessToken(); } catch(Exception e) { failure.set(e); } });
+            refresh.start();
+            try {
+                assertTrue(entered.await(5,TimeUnit.SECONDS));
+                assertNull(await(cb->auth.signIn("new@example.com","password",cb)));
+            } finally { release.countDown(); }
+            refresh.join(5000); assertFalse(refresh.isAlive());
+            shadowOf(Looper.getMainLooper()).idle();
+            assertNotNull("Stale refresh must fail",failure.get());
+            assertEquals(newerUid,auth.current().uid);
+            assertEquals(newerUid,auth.session().getValue().uid);
+            assertEquals(newerUid,new JSONObject(storage.value).getJSONObject("user").getString("id"));
+        }
+    }
     @Test public void failedEncryptedPersistenceDoesNotSignIn() throws Exception {
         MemoryStore storage=new MemoryStore(); storage.fail=true; JSONObject result=tokens(false);
         SupabaseAuthRepository auth=new SupabaseAuthRepository((method,path,body,bearer)->response(result),storage,new MemoryStore(),PROJECT,true);
