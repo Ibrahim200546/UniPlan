@@ -30,6 +30,11 @@ public final class StudyRepository {
     private final AppDatabase db;
     private final StudyDao dao;
     private final AuthRepository auth;
+    private CloudSync cloud;
+    public void enableCloud(android.content.Context context) { cloud=new CloudSync(context,db,auth); }
+    public LiveData<Integer> syncStatus() { return cloud.status; }
+    public LiveData<Boolean> syncConflict() { return cloud.conflict; }
+    public void sync(boolean preferLocal,boolean preferCloud) { Session user=auth.current();if(user!=null&&cloud!=null)worker.execute(()->cloud.sync(user,preferLocal,preferCloud)); }
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final Handler main = new Handler(Looper.getMainLooper());
     private final LiveData<List<SubjectEntity>> subjects;
@@ -68,6 +73,7 @@ public final class StudyRepository {
                 initial.ownerUid = user.uid;
                 initial.displayName = user.displayName == null ? "" : user.displayName;
                 dao.insertProfile(initial);
+                if(cloud!=null)cloud.sync(user,false,false);
             });
         };
         auth.session().observeForever(profileInitializer);
@@ -101,6 +107,7 @@ public final class StudyRepository {
             try {
                 if (auth.current() != captured) throw new Failure("session");
                 if (transaction) {
+                    if(cloud!=null)cloud.dirty(captured.uid);
                     // Room's Callable transaction preserves all-or-nothing behavior.
                     value = db.runInTransaction(() -> action.run(captured.uid));
                 } else value = action.run(captured.uid);
@@ -115,6 +122,7 @@ public final class StudyRepository {
                 if (auth.current() != captured) callback.done(null, "session");
                 else callback.done(result, resultError);
             });
+            if(transaction&&resultError==null&&cloud!=null&&auth.current()==captured)cloud.sync(captured,false,false);
         });
     }
     private static <T> T present(T value) throws Failure { if (value == null) throw new Failure("missing"); return value; }

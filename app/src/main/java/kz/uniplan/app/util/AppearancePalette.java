@@ -19,13 +19,13 @@ public final class AppearancePalette {
             case 1: return new AppearancePalette(0xff101b29,0xff1d2c40,0xffa7c8f8,18);
             case 2: return new AppearancePalette(0xff231b13,0xff34291e,0xffedc27e,18);
             case 3: return new AppearancePalette(0xff201a2b,0xff30263f,0xffd3bafa,18);
-            default: return new AppearancePalette(0xff121c17,0xff22342b,0xffaecfbd,18);
+            default: return new AppearancePalette(0xff121a20,0xff1c2831,0xff9acbdd,12);
         }
         switch (index) {
             case 1: return new AppearancePalette(0xfff2f6fc,0xffe4edfb,0xff315a8b,18);
             case 2: return new AppearancePalette(0xfffbf7ef,0xfff3e8d6,0xff815b29,18);
             case 3: return new AppearancePalette(0xfff8f5fc,0xffeee4f8,0xff75528f,18);
-            default: return new AppearancePalette(0xfff8faf7,0xffe5efe7,0xff3d5c52,18);
+            default: return new AppearancePalette(0xfff5f4f0,0xffffffff,0xff244f60,12);
         }
     }
     public static int parseHex(String input) {

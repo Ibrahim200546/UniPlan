@@ -17,6 +17,7 @@ public final class UniPlanApp extends Application {
         preferences=new SettingsStore(this); preferences.apply();
         auth=AuthProvider.create(this);
         data=new StudyRepository(AppDatabase.get(this),auth);
+        data.enableCloud(this);
         files=new NoteFiles(this,auth);
     }
     public static UniPlanApp get(Context context) { return (UniPlanApp)context.getApplicationContext(); }

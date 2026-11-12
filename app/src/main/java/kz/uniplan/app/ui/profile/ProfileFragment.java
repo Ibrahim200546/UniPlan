@@ -24,6 +24,13 @@ public final class ProfileFragment extends BaseFragment {
     @Override public void onViewCreated(View view,Bundle state) {
         super.onViewCreated(view,state); model=new ViewModelProvider(this).get(ProfileViewModel.class);
         AuthRepository.Session session=app().auth().current(); if(session==null) return;
+        binding.syncStatus.setVisibility(app().auth().isDemo()?View.GONE:View.VISIBLE);
+        binding.syncNow.setVisibility(app().auth().isDemo()?View.GONE:View.VISIBLE);
+        app().data().syncStatus().observe(getViewLifecycleOwner(),value->{binding.syncStatus.setText(value);binding.syncNow.setEnabled(value!=R.string.sync_busy);});
+        binding.syncNow.setOnClickListener(v->{
+            if(Boolean.TRUE.equals(app().data().syncConflict().getValue()))new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.sync_conflict).setMessage(R.string.sync_resolve_help).setNegativeButton(R.string.cancel,null).setNeutralButton(R.string.sync_cloud_choice,(d,w)->app().data().sync(false,true)).setPositiveButton(R.string.sync_local_choice,(d,w)->app().data().sync(true,false)).show();
+            else app().data().sync(false,false);
+        });
         binding.email.setText(app().auth().isDemo()?getString(R.string.demo_local_profile,session.displayName):session.email);
         model.profile().observe(getViewLifecycleOwner(),profile->{ if(profile!=null && !Boolean.TRUE.equals(model.state.get("initialized"))) { model.state.set("initialized",true); model.state.set("name",profile.displayName); model.state.set("group",profile.studyGroup); binding.name.setText(profile.displayName); binding.group.setText(profile.studyGroup); } });
         String restoredName=model.state.get("name"), restoredGroup=model.state.get("group");

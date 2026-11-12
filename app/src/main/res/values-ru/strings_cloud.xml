@@ -1,0 +1,22 @@
+<resources>
+  <string name="auth_confirm_email">Подтвердите email по ссылке в письме, затем войдите.</string>
+  <string name="auth_rate_limit">Слишком много попыток. Подождите минуту.</string>
+  <string name="sync_local">Данные на устройстве</string>
+  <string name="sync_busy">Синхронизация…</string>
+  <string name="sync_done">Сохранено в Supabase</string>
+  <string name="sync_offline">Сохранено на устройстве. Облако недоступно — повторите синхронизацию.</string>
+  <string name="sync_conflict">На другом устройстве есть изменения. Выберите, какую версию сохранить.</string>
+  <string name="sync_action">Синхронизировать</string>
+  <string name="sync_local_choice">Мои изменения</string>
+  <string name="sync_cloud_choice">Версия из облака</string>
+  <string name="sync_resolve_help">Выбранная версия заменит другую. До выбора изменения остаются на устройстве.</string>
+  <string name="home_overview">Обзор дня</string>
+  <string name="home_first_step">Начните с предмета</string>
+  <string name="home_setup_help">Добавьте предметы, затем занятия и задания. Ваш план будет здесь.</string>
+  <string name="home_add_subject">Добавить предмет</string>
+  <string name="auth_eyebrow">УЧЁБА ПОД КОНТРОЛЕМ</string>
+  <string name="auth_footer">Личный план. На всех ваших устройствах.</string>
+  <string name="home_active_short">%1$d\nВ работе</string>
+  <string name="home_done_short">%1$d\nГотово</string>
+  <string name="home_overdue_short">%1$d\nПросрочено</string>
+</resources>

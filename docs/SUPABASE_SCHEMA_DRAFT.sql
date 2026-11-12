@@ -1,11 +1,4 @@
--- REVIEWABLE DRAFT ONLY. Not executed against any Supabase project.
--- Supabase CLI discovery failed with ENOTFOUND registry.npmjs.org,
--- so this is deliberately not presented as a generated/applied migration.
--- Intended project: rrhuqwaytpeerirbnhlc.
--- Before applying: create a migration using `supabase migration new`, copy
--- this SQL into that file, apply through the authorized project connection,
--- then verify RLS and compare-and-swap with two separate authenticated users.
-
+-- Historical contract; applied migrations are in supabase/migrations.
 create table if not exists public.uniplan_state (
   user_id uuid primary key references auth.users(id) on delete cascade,
   revision bigint not null default 1 check (revision > 0),
@@ -83,3 +76,4 @@ $$;
 revoke all on function public.save_uniplan_state(bigint, jsonb) from public, anon;
 grant execute on function public.save_uniplan_state(bigint, jsonb) to authenticated;
 notify pgrst, 'reload schema';
+

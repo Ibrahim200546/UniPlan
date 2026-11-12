@@ -1,0 +1,22 @@
+<resources>
+  <string name="auth_confirm_email">Поштадағы сілтеме арқылы email растаңыз, содан кейін кіріңіз.</string>
+  <string name="auth_rate_limit">Тым көп әрекет. Бір минут күтіңіз.</string>
+  <string name="sync_local">Деректер құрылғыда</string>
+  <string name="sync_busy">Синхрондау…</string>
+  <string name="sync_done">Supabase ішінде сақталды</string>
+  <string name="sync_offline">Құрылғыда сақталды. Бұлт қолжетімсіз — қайта синхрондаңыз.</string>
+  <string name="sync_conflict">Басқа құрылғыда өзгерістер бар. Сақталатын нұсқаны таңдаңыз.</string>
+  <string name="sync_action">Синхрондау</string>
+  <string name="sync_local_choice">Менің өзгерістерім</string>
+  <string name="sync_cloud_choice">Бұлттағы нұсқа</string>
+  <string name="sync_resolve_help">Таңдалған нұсқа екіншісін ауыстырады. Таңдағанға дейін өзгерістер құрылғыда қалады.</string>
+  <string name="home_overview">Күнге шолу</string>
+  <string name="home_first_step">Пән қосудан бастаңыз</string>
+  <string name="home_setup_help">Пәндерді, содан кейін сабақтар мен тапсырмаларды қосыңыз. Жоспарыңыз осында болады.</string>
+  <string name="home_add_subject">Пән қосу</string>
+  <string name="auth_eyebrow">ОҚУ ЖОСПАРЫҢЫЗ</string>
+  <string name="auth_footer">Жеке жоспар. Барлық құрылғыңызда.</string>
+  <string name="home_active_short">%1$d\nБелсенді</string>
+  <string name="home_done_short">%1$d\nДайын</string>
+  <string name="home_overdue_short">%1$d\nКешіккен</string>
+</resources>
