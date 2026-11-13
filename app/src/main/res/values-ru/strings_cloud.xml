@@ -1,6 +1,5 @@
 <resources>
     <string name="auth_confirm_email">Подтвердите почту по ссылке в письме. Откройте письмо на этом устройстве, затем войдите. Проверьте папку «Спам».</string>
-    <string name="auth_resend">Отправить подтверждение ещё раз</string>
     <string name="auth_rate_limit">Слишком много попыток. Подождите немного и повторите.</string>
     <string name="auth_link_expired">Ссылка недействительна или была запрошена на другом устройстве. Запросите новое письмо здесь.</string>
     <string name="auth_session_expired">Сессия завершена. Войдите снова.</string>

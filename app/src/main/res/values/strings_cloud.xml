@@ -1,6 +1,5 @@
 <resources>
     <string name="auth_confirm_email">Хаттағы сілтеме арқылы поштаңызды растаңыз. Хатты осы құрылғыда ашып, жүйеге кіріңіз. «Спам» қалтасын тексеріңіз.</string>
-    <string name="auth_resend">Растау хатын қайта жіберу</string>
     <string name="auth_rate_limit">Әрекет тым көп. Біраз күтіп, қайталаңыз.</string>
     <string name="auth_link_expired">Сілтеме жарамсыз немесе басқа құрылғыда сұралған. Осы құрылғыда жаңа хат сұраңыз.</string>
     <string name="auth_session_expired">Сессия аяқталды. Қайта кіріңіз.</string>

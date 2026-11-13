@@ -23,7 +23,6 @@ public interface AuthRepository {
     default LiveData<Boolean> recovering() { return new androidx.lifecycle.MutableLiveData<>(false); }
     default void handleRedirect(String uri, Callback callback) { callback.complete(kz.uniplan.app.R.string.auth_failed); }
     default void updatePassword(String password, Callback callback) { callback.complete(kz.uniplan.app.R.string.auth_failed); }
-    default void resendConfirmation(String email, Callback callback) { callback.complete(kz.uniplan.app.R.string.auth_failed); }
     /** Cloud-only token access. Call on a worker thread; implementations may refresh tokens. */
     default String accessToken() throws Exception { throw new IllegalStateException("Cloud authentication is not configured"); }
 }

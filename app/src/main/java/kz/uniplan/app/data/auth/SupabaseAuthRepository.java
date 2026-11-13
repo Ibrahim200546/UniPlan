@@ -145,14 +145,6 @@ public final class SupabaseAuthRepository implements AuthRepository {
             return null;
         });
     }
-    @Override public void resendConfirmation(String email,Callback callback) {
-        run(callback,generation -> {
-            // Resending preserves the original PKCE verifier; it must not create an unrelated flow.
-            checked(http.request("POST","/auth/v1/resend?redirect_to="+Uri.encode(REDIRECT),
-                    new JSONObject().put("email",email).put("type","signup"),null));
-            return R.string.auth_confirm_email;
-        });
-    }
     @Override public void handleRedirect(String rawUri,Callback callback) {
         run(callback,generation -> {
             Uri uri=Uri.parse(rawUri);

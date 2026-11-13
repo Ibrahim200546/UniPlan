@@ -39,9 +39,4 @@ public final class AuthViewModel extends AndroidViewModel {
         if(Boolean.TRUE.equals(busy.getValue())) return;
         busy.setValue(true); auth.handleRedirect(uri,error->{ busy.setValue(false); if(error!=null) notice.setValue(error); });
     }
-    public void resend(String email) {
-        if(Boolean.TRUE.equals(busy.getValue())) return;
-        if(!Validation.email(email)) { notice.setValue(R.string.auth_validation); return; }
-        busy.setValue(true); auth.resendConfirmation(email.trim(),error->{ busy.setValue(false); if(error!=null) notice.setValue(error); });
-    }
 }
