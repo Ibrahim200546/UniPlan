@@ -188,34 +188,46 @@ jobs:
             exit 0
           fi
 
-          if gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > release.json 2> release-error.txt; then
+          # Drafts may not have a public tag yet. Use their release IDs throughout.
+          releases="repos/$GH_REPO/releases"
+          gh api --paginate --slurp "$releases" | jq --arg tag "$RELEASE_TAG" \
+            '[.[][] | select(.tag_name == $tag)] | first // null' > release.json
+          if jq -e '. != null' release.json > /dev/null; then
             if [[ $(jq -r .draft release.json) != true ]]; then
-              echo "Release $RELEASE_TAG is already published; rerun leaves it unchanged." >> "$GITHUB_STEP_SUMMARY"
+              echo "Release $RELEASE_TAG is already published." >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
-            [[ $(jq -r .target_commitish release.json) == "$GITHUB_SHA" ]] || { echo '::error::Existing draft targets another commit'; exit 1; }
+            [[ $(jq -r .target_commitish release.json) == "$GITHUB_SHA" ]] || { echo '::error::Draft targets another commit'; exit 1; }
           else
-            grep -q 'HTTP 404' release-error.txt || { cat release-error.txt; exit 1; }
-            # An existing tag must resolve to this commit, never silently reuse another build.
             if gh api "repos/$GH_REPO/git/ref/tags/$RELEASE_TAG" > tag.json 2> tag-error.txt; then
-              [[ $(jq -r .object.type tag.json) == commit && $(jq -r .object.sha tag.json) == "$GITHUB_SHA" ]] || { echo '::error::Existing tag targets another object'; exit 1; }
+              [[ $(jq -r .object.type tag.json) == commit && $(jq -r .object.sha tag.json) == "$GITHUB_SHA" ]] || { echo '::error::Tag targets another object'; exit 1; }
             else
               grep -q 'HTTP 404' tag-error.txt || { cat tag-error.txt; exit 1; }
             fi
-            printf 'UniPlan Android APK\n\nCommit: %s\nBuild: %s\n\nUnit tests and APK signature checks passed in this workflow. Device UI and live Supabase authentication are not verified by this build.\n' "$GITHUB_SHA" "$GITHUB_RUN_NUMBER" > release-notes.txt
-            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --draft --latest=false \
-              --title "UniPlan build $GITHUB_RUN_NUMBER" --notes-file release-notes.txt
+            gh api -X POST "$releases" -f tag_name="$RELEASE_TAG" -f target_commitish="$GITHUB_SHA" \
+              -f name="UniPlan build $GITHUB_RUN_NUMBER" -F draft=true -f make_latest=false \
+              -f body="Signed UniPlan Android APK. Build $GITHUB_RUN_NUMBER from $GITHUB_SHA." > release.json
           fi
 
-          # Only drafts are overwritten. Published releases are immutable to this workflow.
-          [[ $(gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" --jq .draft) == true ]] || { echo '::error::Release is no longer a draft'; exit 1; }
-          gh release upload "$RELEASE_TAG" dist/UniPlan.apk dist/SHA256SUMS dist/update.json --clobber
-          gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > ready.json
-          jq -e '[.assets[] | select(.state == "uploaded") | .name] | (index("UniPlan.apk") != null and index("SHA256SUMS") != null and index("update.json") != null)' ready.json > /dev/null
+          id=$(jq -er '.id' release.json)
+          upload_url=$(jq -er '.upload_url | split("{")[0]' release.json)
+          [[ "$upload_url" == "https://uploads.github.com/repos/$GH_REPO/releases/$id/assets" ]]
+          for name in UniPlan.apk SHA256SUMS update.json; do
+            digest="sha256:$(sha256sum "dist/$name" | cut -d ' ' -f 1)"
+            asset=$(jq -c --arg n "$name" '.assets[] | select(.name == $n)' release.json)
+            if [[ -n "$asset" ]]; then
+              [[ $(jq -r .digest <<< "$asset") != "$digest" ]] || continue
+              gh api -X DELETE "$releases/assets/$(jq -er .id <<< "$asset")"
+            fi
+            curl --fail-with-body --silent --show-error -H "Authorization: Bearer $GH_TOKEN" \
+              -H 'Content-Type: application/octet-stream' --data-binary "@dist/$name" "$upload_url?name=$name" \
+              | jq -e --arg digest "$digest" '.state == "uploaded" and .digest == $digest' > /dev/null
+          done
+          gh api "$releases/$id" | jq -e '.draft and ([.assets[] | select(.state == "uploaded") | .name] | sort == ["SHA256SUMS","UniPlan.apk","update.json"])' > /dev/null
           main_sha=$(gh api "repos/$GH_REPO/git/ref/heads/main" --jq .object.sha)
           if [[ "$main_sha" != "$GITHUB_SHA" ]]; then
             echo 'Main changed during upload. Complete files remain in a draft; Latest was not changed.' >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          gh release edit "$RELEASE_TAG" --draft=false --latest
+          gh api -X PATCH "$releases/$id" -F draft=false -f make_latest=true --jq .html_url
           printf '[Download UniPlan.apk](https://github.com/%s/releases/latest/download/UniPlan.apk)\n' "$GH_REPO" >> "$GITHUB_STEP_SUMMARY"
