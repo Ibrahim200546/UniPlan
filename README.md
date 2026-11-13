@@ -1,4 +1,4 @@
-# UniPlan 1.3.0
+# UniPlan
 
 Android-органайзер студента: Java, XML, Room и Supabase. Автор — **Тәңірберген Ибраһим**, группа **АЖҚ-321**.
 

@@ -1,5 +1,5 @@
 name: Android APK Release
-run-name: UniPlan build ${{ github.run_number }} В· ${{ github.sha }}
+run-name: Release UniPlan from ${{ github.ref_name }}
 
 on:
   push:
@@ -77,11 +77,21 @@ jobs:
           (yes || true) | "$sdkmanager" --licenses > /dev/null
           "$sdkmanager" 'platforms;android-35' 'build-tools;35.0.0'
 
+      - name: Choose the next application version
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 3 \
+            "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/update.json" \
+            --output "$RUNNER_TEMP/previous-update.json"
+          version=$(python3 scripts/next-release-version.py "$RUNNER_TEMP/previous-update.json" "$((1000 + GITHUB_RUN_NUMBER))")
+          echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
+
       - name: Test and build the real authentication app
         run: |
           set -euo pipefail
           chmod +x gradlew
           ./gradlew --no-daemon --console=plain \
+            -PreleaseVersion="$RELEASE_VERSION" \
             -PciBuildNumber="$GITHUB_RUN_NUMBER" \
             -PsupabaseUrl="$SUPABASE_URL" \
             -PsupabasePublishableKey="$SUPABASE_PUBLISHABLE_KEY" \
@@ -126,6 +136,7 @@ jobs:
               metadata = json.load(stream)
           assert metadata['applicationId'] == 'kz.uniplan.app', 'Refusing to publish a demo or unexpected package'
           assert len(metadata['elements']) == 1, 'Expected one installable APK'
+          assert metadata['elements'][0]['versionName'] == os.environ['RELEASE_VERSION'], 'Wrong APK version name'
           assert metadata['elements'][0]['versionCode'] == 1000 + int(os.environ['GITHUB_RUN_NUMBER']), 'CI versionCode was not applied'
           PY
           (cd dist && sha256sum UniPlan.apk > SHA256SUMS)
@@ -169,7 +180,6 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      RELEASE_TAG: build-${{ github.run_number }}
     steps:
       - name: Download only this run's verified artifact
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -188,6 +198,9 @@ jobs:
             exit 0
           fi
 
+          version=$(jq -er '.versionName | select(test("^(0|[1-9][0-9]*)([.](0|[1-9][0-9]*)){2}$"))' dist/update.json)
+          RELEASE_TAG="v$version"
+
           # Drafts may not have a public tag yet. Use their release IDs throughout.
           releases="repos/$GH_REPO/releases"
           gh api --paginate --slurp "$releases" | jq --arg tag "$RELEASE_TAG" \
@@ -205,8 +218,8 @@ jobs:
               grep -q 'HTTP 404' tag-error.txt || { cat tag-error.txt; exit 1; }
             fi
             gh api -X POST "$releases" -f tag_name="$RELEASE_TAG" -f target_commitish="$GITHUB_SHA" \
-              -f name="UniPlan build $GITHUB_RUN_NUMBER" -F draft=true -f make_latest=false \
-              -f body="Signed UniPlan Android APK. Build $GITHUB_RUN_NUMBER from $GITHUB_SHA." > release.json
+              -f name="UniPlan $version" -F draft=true -f make_latest=false \
+              -f body="UniPlan $version for Android. Download UniPlan.apk to install or update." > release.json
           fi
 
           id=$(jq -er '.id' release.json)

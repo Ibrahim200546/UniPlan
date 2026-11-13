@@ -35,7 +35,9 @@
 
 Сборка проверяет публичную конфигурацию и реальное наличие закрытой серверной схемы, выполняет SQL-тесты, unit tests обоих вариантов и lint основного варианта. Затем проверяет подпись APK, applicationId kz.uniplan.app и versionCode 1000 + github.run_number.
 
-Отдельный job с contents: write получает только готовые артефакты. Он создаёт черновик build-N, загружает оба файла и только затем публикует выпуск. Устаревшая сборка не заменяет Latest; уже опубликованный build-N повторный запуск не изменяет. Actions закреплены по проверенным commit SHA. [Разрешения workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions), [создание Release](https://cli.github.com/manual/gh_release_create).
+Номер версии в APK, на экране входа, в разделе «О приложении» и в update.json совпадает. Workflow увеличивает последний компонент версии из манифеста Latest на единицу. Для перехода на новую ветку версий задайте минимальную версию в config/version.txt. При повторном запуске уже опубликованной сборки номер сохраняется. Заголовок UniPlan X.Y.Z и тег vX.Y.Z формируются из versionName собранного APK. Внутренний versionCode по-прежнему растёт с номером запуска GitHub Actions.
+
+После проверки контрольных сумм отдельный job публикует UniPlan.apk, SHA256SUMS и update.json из черновика как Latest.
 
 Постоянная ссылка появится после первой успешной публикации: [UniPlan.apk](https://github.com/Ibrahim200546/UniPlan/releases/latest/download/UniPlan.apk). До этого она может возвращать 404. Артефакт **Android CI** имеет временную подпись runner и предназначен для тестирования, а не обновления прежних выпусков.
 

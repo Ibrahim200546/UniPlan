@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
+import kz.uniplan.app.BuildConfig;
 import kz.uniplan.app.R;
 import kz.uniplan.app.UniPlanApp;
 import kz.uniplan.app.databinding.ActivityAuthBinding;
@@ -18,6 +19,7 @@ public final class AuthActivity extends BaseActivity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         binding=ActivityAuthBinding.inflate(getLayoutInflater()); setContentView(binding.getRoot()); Ui.insets(binding.getRoot());
+        binding.appVersion.setText(getString(R.string.app_version_label, getString(R.string.app_name), BuildConfig.VERSION_NAME));
         model=new ViewModelProvider(this).get(AuthViewModel.class);
         UniPlanApp app=UniPlanApp.get(this);
         boolean demo=app.auth().isDemo();
