@@ -26,8 +26,8 @@ android {
         applicationId 'kz.uniplan.app'
         minSdk 24
         targetSdk 35
-        versionCode providers.gradleProperty('ciBuildNumber').map { 1000 + it.toInteger() }.getOrElse(3)
-        versionName '1.2.0'
+        versionCode providers.gradleProperty('ciBuildNumber').map { 1000 + it.toInteger() }.getOrElse(1001)
+        versionName '1.3.0'
         buildConfigField 'String', 'SUPABASE_URL', groovy.json.JsonOutput.toJson(projectUrl)
         buildConfigField 'String', 'SUPABASE_PUBLISHABLE_KEY', groovy.json.JsonOutput.toJson(publicKey)
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

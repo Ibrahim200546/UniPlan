@@ -1,0 +1,11 @@
+<resources>
+    <string name="update_check">Проверить обновления</string>
+    <string name="update_checking">Проверяем обновления…</string>
+    <string name="update_available">Обновление UniPlan</string>
+    <string name="update_offer">Доступна версия %1$s. Скачать и установить? Ваши данные сохранятся.</string>
+    <string name="update_download">Скачать</string>
+    <string name="update_downloading">Обновление загружается. Когда оно будет готово, Android предложит установку.</string>
+    <string name="update_current">Установлена последняя версия</string>
+    <string name="update_failed">Не удалось проверить или установить обновление. Проверьте интернет и повторите.</string>
+    <string name="update_permission">Разрешите установку из UniPlan на следующем экране и вернитесь назад.</string>
+</resources>

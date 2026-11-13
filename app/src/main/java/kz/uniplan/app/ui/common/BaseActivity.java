@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(appearanceRoot!=null){appearanceListener=()->Appearance.applyActivity(this);appearanceRoot.getViewTreeObserver().addOnGlobalLayoutListener(appearanceListener);Appearance.applyActivity(this);}
     }
     @Override protected void onStart() { super.onStart(); lifecycle("onStart"); }
-    @Override protected void onResume() { super.onResume(); lifecycle("onResume"); }
+    @Override protected void onResume() { super.onResume(); lifecycle("onResume"); kz.uniplan.app.update.AppUpdates.resume(this); }
     @Override protected void onPause() { lifecycle("onPause"); super.onPause(); }
     @Override protected void onStop() { lifecycle("onStop"); super.onStop(); }
     @Override protected void onRestart() { super.onRestart(); lifecycle("onRestart"); }

@@ -49,6 +49,7 @@ public final class ProfileFragment extends BaseFragment {
         binding.seed.setVisibility(app().auth().isDemo()?View.VISIBLE:View.GONE);
         binding.seed.setOnClickListener(v->new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.profile_seed).setMessage(R.string.profile_seed_help).setNegativeButton(R.string.cancel,null).setPositiveButton(R.string.add,(d,w)->model.seed()).show());
         binding.signOut.setOnClickListener(v->new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.sign_out).setMessage(R.string.profile_signout_help).setNegativeButton(R.string.cancel,null).setPositiveButton(R.string.sign_out,(d,w)->app().auth().signOut()).show());
+        binding.checkUpdates.setOnClickListener(v->kz.uniplan.app.update.AppUpdates.check(requireActivity(),true));
         binding.about.setOnClickListener(v->new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.about_title).setMessage(R.string.about_text).setPositiveButton(R.string.ok,null).show());
         binding.learn.setOnClickListener(v->{ try { startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://developer.android.com/guide"))); } catch(ActivityNotFoundException e) { message("unknown"); } });
         setupSpinner(binding.theme,R.array.theme_options,app().prefs().theme(),position->{ if(position!=app().prefs().theme()) app().prefs().setTheme(position); });

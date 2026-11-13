@@ -18,7 +18,7 @@ defaults:
     shell: bash
 
 env:
-  EXPECTED_CERT_SHA256: ${{ vars.ANDROID_SIGNING_CERT_SHA256 || '1b5edf62b174211a13ccc32883cd74006cca47cb0fb368ae839b9ed6e0651a42' }}
+  EXPECTED_CERT_SHA256: ${{ vars.ANDROID_SIGNING_CERT_SHA256 || '51b7a4ef033c2dec5ff6daa752e80f34a0dc443742fbf242b1af8259560cebe5' }}
 
 jobs:
   build:
@@ -124,6 +124,7 @@ jobs:
           mkdir -p dist
           cp "$apk" dist/UniPlan.apk
           (cd dist && sha256sum UniPlan.apk > SHA256SUMS)
+          python3 scripts/update-manifest.py
 
       - name: Upload the verified files for the publisher
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -200,9 +201,9 @@ jobs:
 
           # Only drafts are overwritten. Published releases are immutable to this workflow.
           [[ $(gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" --jq .draft) == true ]] || { echo '::error::Release is no longer a draft'; exit 1; }
-          gh release upload "$RELEASE_TAG" dist/UniPlan.apk dist/SHA256SUMS --clobber
+          gh release upload "$RELEASE_TAG" dist/UniPlan.apk dist/SHA256SUMS dist/update.json --clobber
           gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > ready.json
-          jq -e '[.assets[] | select(.state == "uploaded") | .name] | (index("UniPlan.apk") != null and index("SHA256SUMS") != null)' ready.json > /dev/null
+          jq -e '[.assets[] | select(.state == "uploaded") | .name] | (index("UniPlan.apk") != null and index("SHA256SUMS") != null and index("update.json") != null)' ready.json > /dev/null
           main_sha=$(gh api "repos/$GH_REPO/git/ref/heads/main" --jq .object.sha)
           if [[ "$main_sha" != "$GITHUB_SHA" ]]; then
             echo 'Main changed during upload. Complete files remain in a draft; Latest was not changed.' >> "$GITHUB_STEP_SUMMARY"

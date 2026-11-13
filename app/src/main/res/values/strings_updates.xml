@@ -1,0 +1,11 @@
+<resources>
+    <string name="update_check">Жаңартуларды тексеру</string>
+    <string name="update_checking">Жаңартулар тексерілуде…</string>
+    <string name="update_available">UniPlan жаңартуы</string>
+    <string name="update_offer">%1$s нұсқасы қолжетімді. Жүктеп орнату керек пе? Деректеріңіз сақталады.</string>
+    <string name="update_download">Жүктеу</string>
+    <string name="update_downloading">Жаңарту жүктелуде. Дайын болғанда Android орнатуды ұсынады.</string>
+    <string name="update_current">Ең соңғы нұсқа орнатылған</string>
+    <string name="update_failed">Жаңартуды тексеру немесе орнату мүмкін болмады. Интернетті тексеріп, қайталаңыз.</string>
+    <string name="update_permission">Келесі экранда UniPlan қолданбасынан орнатуға рұқсат беріп, кері оралыңыз.</string>
+</resources>

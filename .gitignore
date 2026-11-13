@@ -11,6 +11,7 @@ app/src/firebase/google-services.json
 *.aab
 *.hprof
 node_modules/
+dist/
 supabase/.temp/
 supabase/.branches/
 .supabase/
