@@ -7,15 +7,19 @@ import org.junit.Test;
 import kz.uniplan.app.domain.schedule.*;
 
 public class ScheduleParserTest {
-    @Test public void userTimetablePreservesAll23LessonsAndMetadata() throws Exception {
-        String input=new String(getClass().getResourceAsStream("/user_schedule.md").readAllBytes(),StandardCharsets.UTF_8);
+    @Test public void syntheticTimetablePreservesAll23LessonsAndMetadata() throws Exception {
+        String input=new String(getClass().getResourceAsStream("/synthetic_schedule.md").readAllBytes(),StandardCharsets.UTF_8);
         ScheduleImport.Preview p=ScheduleParser.parse(input);
         assertTrue(p.issues.toString(),p.canImport());assertEquals(23,p.entries.size());
-        assertEquals("3D Max-та моделдеу",p.entries.get(0).subject);assertEquals(510,p.entries.get(0).start);
-        assertEquals(10,p.entries.get(5).number);assertEquals(1025,p.entries.get(5).start);
-        assertEquals("магистр\nоқытушы - дәріскер\nОразбаева Асель Айтмухамедовна",p.entries.get(0).teacher);
-        assertEquals("http://meet.google.com/mhi-wnyv-ind",p.entries.get(0).url);
-        assertEquals(6,p.entries.get(22).day);assertTrue(p.entries.get(22).url.startsWith("https://student.zhetysu.edu.kz:8059/"));
+        assertEquals("Сынақ пәні A",p.entries.get(0).subject);assertEquals(520,p.entries.get(0).start);
+        assertEquals(565,p.entries.get(0).end);assertEquals("Дәріс",p.entries.get(0).type);
+        assertEquals(10,p.entries.get(5).number);assertEquals(1030,p.entries.get(5).start);
+        assertEquals("Сынақ профилі\nОқу үлгісі\nТест оқытушысы 01",p.entries.get(0).teacher);
+        assertEquals("DEMO-101",p.entries.get(0).room);
+        assertEquals("https://example.org/lesson/1",p.entries.get(0).url);
+        assertEquals("",p.entries.get(1).url);assertEquals("",p.entries.get(4).room);
+        assertEquals(6,p.entries.get(22).day);assertEquals("https://example.net/remote/23",p.entries.get(22).url);
+        assertEquals(0,p.ignoredAccessFields);
         int[] counts=new int[7];for(ScheduleImport.Entry row:p.entries)counts[row.day-1]++;
         assertArrayEquals(new int[]{6,4,3,6,3,1,0},counts);
     }
