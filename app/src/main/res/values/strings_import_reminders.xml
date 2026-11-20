@@ -23,6 +23,7 @@
     <string name="import_network">Бетті жүктеу мүмкін болмады. Сілтеме мен интернетті тексеріңіз.</string>
     <string name="import_row_error">%1$d-жол: %2$s</string>
     <string name="import_more_errors">Тағы %1$d қате. Мәтінді түзетіп, қайта тексеріңіз.</string>
+    <string name="import_link_note_omitted">ВКС сілтемесі бағанындағы мекенжай немесе ескертпе импортталмайды.</string>
     <string name="import_access_omitted">ВКС логині мен құпиясөзі импортталмайды.</string>
     <string name="reminder_title">Сабақ ескертулері</string>
     <string name="reminder_button">Ескерту</string>

@@ -23,6 +23,7 @@
     <string name="import_network">Не удалось загрузить страницу. Проверьте ссылку и интернет.</string>
     <string name="import_row_error">Строка %1$d: %2$s</string>
     <string name="import_more_errors">Ещё ошибок: %1$d. Исправьте текст и проверьте снова.</string>
+    <string name="import_link_note_omitted">Адрес или примечание в столбце «Ссылка ВКС» не импортируется.</string>
     <string name="import_access_omitted">Логин и пароль ВКС не импортируются.</string>
     <string name="reminder_title">Напоминания о занятиях</string>
     <string name="reminder_button">Напомнить</string>

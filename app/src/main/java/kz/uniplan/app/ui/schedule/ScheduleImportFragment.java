@@ -78,6 +78,7 @@ public final class ScheduleImportFragment extends BaseFragment {
             for(int i=0;i<Math.min(4,preview.issues.size());i++){ScheduleImport.Issue issue=preview.issues.get(i);if(issues.length()>0)issues.append('\n');issues.append(issue.row==0?getString(error(issue.code)):getString(R.string.import_row_error,issue.row,getString(error(issue.code))));}
             if(preview.issues.size()>4)issues.append('\n').append(getString(R.string.import_more_errors,preview.issues.size()-4));
             if(preview.ignoredAccessFields>0){if(issues.length()>0)issues.append('\n');issues.append(getString(R.string.import_access_omitted));}
+            if(preview.ignoredLinkFields>0){if(issues.length()>0)issues.append('\n');issues.append(getString(R.string.import_link_note_omitted));}
         }
         b.issues.setText(issues.toString());b.issues.setVisibility(issues.length()==0?View.GONE:View.VISIBLE);
     }

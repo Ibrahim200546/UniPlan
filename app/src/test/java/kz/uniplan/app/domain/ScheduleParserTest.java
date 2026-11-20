@@ -47,6 +47,45 @@ public class ScheduleParserTest {
         assertTrue(p.issues.toString(),p.canImport());assertEquals(2,p.entries.size());
         assertEquals("Сынақ; B, A",p.entries.get(0).subject);assertEquals(1,p.entries.get(1).day);
     }
+    private static final String NUMBERED_TSV_HEADER="№\tДень\tПара\tВремя\tДисциплина\tВид занятия\tФИО преподавателя\tАудитория\tСсылка ВКС\tЛогин/пароль ВКС\n";
+    @Test public void copiedNumberedTsvRecoversUnquotedTeacherLinesAndOmitsAddress(){
+        StringBuilder source=new StringBuilder(NUMBERED_TSV_HEADER);
+        for(int i=1;i<=23;i++){
+            String url=i==23?"Сынақ көшесі, 100":"https://example.org/lesson/"+i;
+            source.append(i).append(" \tПН \t1 \t08:30-09:20 \tСынақ ").append(i)
+                    .append("\tДәріс\tСынақ профилі\nОқу үлгісі\nТест оқытушысы ").append(i)
+                    .append("\tDEMO-101\t").append(url).append("\t").append(i==23?"Ескерту":"").append('\n');
+        }
+        ScheduleImport.Preview p=ScheduleParser.parse(source.toString());
+        assertTrue(p.issues.toString(),p.canImport());assertEquals(23,p.entries.size());
+        assertEquals("Сынақ профилі\nОқу үлгісі\nТест оқытушысы 1",p.entries.get(0).teacher);
+        assertEquals("DEMO-101",p.entries.get(0).room);
+        assertEquals("https://example.org/lesson/1",p.entries.get(0).url);
+        assertEquals("",p.entries.get(22).url);assertEquals(1,p.ignoredLinkFields);assertEquals(1,p.ignoredAccessFields);
+    }
+    @Test public void richNumberedExportAlsoOmitsAddress(){
+        String html="<table><tr><th>"+NUMBERED_TSV_HEADER.trim().replace("\t","</th><th>")
+                +"</th></tr><tr><td>1</td><td>ПН</td><td>1</td><td>08:30-09:20</td><td>Сынақ</td><td>Дәріс</td>"
+                +"<td>Тест оқытушысы</td><td>DEMO-101</td><td>Сынақ көшесі, 100</td><td></td></tr></table>";
+        ScheduleImport.Preview p=ScheduleParser.parse(html);
+        assertTrue(p.issues.toString(),p.canImport());assertEquals(1,p.ignoredLinkFields);
+        assertEquals("",p.entries.get(0).url);
+    }
+    @Test public void copiedNumberedTsvDoesNotHideMalformedNumberedRowsOrUnsafeLinks(){
+        String first="1\tПН\t1\t08:30-09:20\tСынақ\tДәріс\tТест";
+        ScheduleImport.Preview damaged=ScheduleParser.parse(NUMBERED_TSV_HEADER+first+"\n2\tПН\t1\tnot-a-time\n");
+        assertFalse(damaged.canImport());assertTrue(damaged.issues.stream().anyMatch(i->"time".equals(i.code)));
+        ScheduleImport.Preview unrelated=ScheduleParser.parse(NUMBERED_TSV_HEADER+first+"\nIndependent row\tПН\t1\t08:30-09:20");
+        assertFalse(unrelated.canImport());
+        ScheduleImport.Preview after=ScheduleParser.parse(NUMBERED_TSV_HEADER+first+"\nТест оқытушысы\tDEMO-101\t\t\n2\tПН\t1\tbad");
+        assertFalse(after.canImport());assertEquals(4,after.issues.get(0).row);
+        ScheduleImport.Preview generic=ScheduleParser.parse("День;Время;Предмет;Ссылка ВКС\nПН;08:30-09:20;Сынақ;Сынақ көшесі 100");
+        assertFalse(generic.canImport());assertEquals(0,generic.ignoredLinkFields);
+        for(String url:new String[]{"javascript: alert(1)","https:// example.org","www.example.org bad","example.org bad","https //broken.test","https://login@example.org"}){
+            ScheduleImport.Preview invalid=ScheduleParser.parse(NUMBERED_TSV_HEADER+first+"\tDEMO-101\t"+url+"\t");
+            assertFalse(url,invalid.canImport());assertEquals(0,invalid.ignoredLinkFields);
+        }
+    }
     @Test public void htmlMergedDaysAndLinksWork(){
         String html="<table><tr><th>День</th><th>Время</th><th>Предмет</th><th>Ссылка ВКС</th></tr><tr><td rowspan='2'>ВТ</td><td>08:30-09:20</td><td>Java</td><td><a href='/meet'>Открыть</a></td></tr><tr><td>09:25-10:15</td><td>Java</td><td></td></tr></table>";
         ScheduleImport.Preview p=ScheduleParser.parse(html,"https://university.example/schedule");

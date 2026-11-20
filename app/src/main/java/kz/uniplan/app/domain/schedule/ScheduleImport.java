@@ -35,10 +35,10 @@ public final class ScheduleImport {
     public static final class Preview {
         public final List<Entry> entries;
         public final List<Issue> issues;
-        public final int ignoredAccessFields;
-        public Preview(List<Entry> entries,List<Issue> issues,int ignoredAccessFields) {
+        public final int ignoredAccessFields, ignoredLinkFields;
+        public Preview(List<Entry> entries,List<Issue> issues,int ignoredAccessFields,int ignoredLinkFields) {
             this.entries=Collections.unmodifiableList(new ArrayList<>(entries));
-            this.issues=Collections.unmodifiableList(new ArrayList<>(issues));this.ignoredAccessFields=ignoredAccessFields;
+            this.issues=Collections.unmodifiableList(new ArrayList<>(issues));this.ignoredAccessFields=ignoredAccessFields;this.ignoredLinkFields=ignoredLinkFields;
         }
         public boolean canImport(){return !entries.isEmpty()&&issues.isEmpty();}
     }
