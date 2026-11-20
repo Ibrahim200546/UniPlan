@@ -47,13 +47,13 @@ public class ScheduleFeaturesTest {
         main(()->{app.reminders().setMinutes(originalMinutes);if(previous==null)app.auth().signOut();else app.auth().openDemo("demo-1".equals(previous.uid)?1:2);});
     }
     @Test public void clipboardPreviewSaveRepeatAndNotification() throws Exception {
-        String table=new String(InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("user_schedule.md").readAllBytes(),StandardCharsets.UTF_8);
+        String table=new String(InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("synthetic_schedule.md").readAllBytes(),StandardCharsets.UTF_8);
         // Isolated names allow testing beside any existing demo timetable.
         String[] lines=table.split("\n");String token="Import-"+System.nanoTime()+" ";
-        for(int i=2;i<lines.length;i++){String[] cells=lines[i].split("\\|",-1);cells[5]=token+cells[5].trim();lines[i]=String.join("|",cells);}
+        for(int i=3;i<lines.length;i++){String[] cells=lines[i].split("\\|",-1);cells[5]=token+cells[5].trim();lines[i]=String.join("|",cells);}
         String fixture=String.join("\n",lines);
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(activity->((ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Schedule",fixture)));
+            scenario.onActivity(activity->((ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newHtmlText("Schedule",fixture,"<table><tr><td>Unrelated clipboard markup</td></tr></table>")));
             scenario.onActivity(activity->((com.google.android.material.bottomnavigation.BottomNavigationView)activity.findViewById(R.id.bottomNav)).setSelectedItemId(R.id.scheduleFragment));
             tap(R.id.easyAdd);tap(R.id.pasteButton);waitEnabled(R.id.importButton);
             assertEquals(app.getString(R.string.import_count,23),find(R.id.summary).getText());

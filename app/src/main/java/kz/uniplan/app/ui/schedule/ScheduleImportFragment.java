@@ -51,9 +51,14 @@ public final class ScheduleImportFragment extends BaseFragment {
         ClipData clip=clipboard.getPrimaryClip();
         if(clip==null||clip.getItemCount()==0){Toast.makeText(requireContext(),R.string.import_clipboard_empty,Toast.LENGTH_SHORT).show();return;}
         ClipData.Item item=clip.getItemAt(0);String html=item.getHtmlText();
-        CharSequence plain=item.getText();String text=html!=null&&html.toLowerCase(java.util.Locale.ROOT).contains("<table")?html:plain==null?"":plain.toString();
-        if(text.length()>ScheduleImport.MAX_INPUT){Toast.makeText(requireContext(),R.string.import_limit,Toast.LENGTH_LONG).show();return;}
-        b.sourceInput.setText(text);hideKeyboard();vm.analyze();
+        CharSequence plain=item.getText();String plainText=plain==null?"":plain.toString();
+        boolean rich=html!=null&&html.toLowerCase(java.util.Locale.ROOT).contains("<table")&&html.length()<=ScheduleImport.MAX_INPUT;
+        String text=rich?html:plainText;
+        if(text.length()>ScheduleImport.MAX_INPUT||(!rich&&text.isEmpty()&&html!=null&&html.length()>ScheduleImport.MAX_INPUT)){
+            Toast.makeText(requireContext(),R.string.import_limit,Toast.LENGTH_LONG).show();return;
+        }
+        b.sourceInput.setText(text);hideKeyboard();
+        vm.analyze(rich&&plainText.length()<=ScheduleImport.MAX_INPUT?plainText:null);
     }
     private void website(){
         EditText input=new EditText(requireContext());input.setSingleLine(true);input.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);
@@ -80,7 +85,7 @@ public final class ScheduleImportFragment extends BaseFragment {
         switch(code){case "empty":return R.string.import_clipboard_empty;case "limit":return R.string.import_limit;case "header":case "format":return R.string.import_format;
             case "day":return R.string.import_day_error;case "time":return R.string.import_time_error;case "number":return R.string.lesson_invalid_number;
             case "fields":case "validation":return R.string.import_fields_error;case "url":return R.string.import_url_error;case "login":return R.string.import_login;
-            case "session":return R.string.error_session;default:return R.string.import_network;}
+            case "save":return R.string.import_save_failed;case "session":return R.string.error_session;default:return R.string.import_network;}
     }
     private static final class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.Holder> {
         private List<ScheduleImport.Entry> entries=new ArrayList<>();

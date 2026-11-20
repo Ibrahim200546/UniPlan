@@ -10,6 +10,7 @@
     <string name="import_preview_hint">Проверьте занятия перед сохранением</string>
     <string name="import_count">Распознано занятий: %1$d</string>
     <string name="import_save">Добавить в расписание</string>
+    <string name="import_save_failed">Не удалось сохранить занятия. Попробуйте ещё раз.</string>
     <string name="import_done">Добавлено: %1$d · Повторов: %2$d · Новых предметов: %3$d</string>
     <string name="import_clipboard_empty">Вставьте текст расписания. Буфер обмена может быть пуст.</string>
     <string name="import_limit">Таблица слишком большая. Добавляйте до 500 занятий за один раз.</string>

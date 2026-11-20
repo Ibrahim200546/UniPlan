@@ -25,6 +25,7 @@ public final class ScheduleParser {
     public static Preview parse(String input,String baseUrl) {
         if(input==null||input.trim().isEmpty())return error("empty");
         if(input.length()>ScheduleImport.MAX_INPUT)return error("limit");
+        if(input.charAt(0)=='\ufeff')input=input.substring(1);
         try {
             if(Pattern.compile("<(table|tr)\\b",Pattern.CASE_INSENSITIVE).matcher(input).find()) {
                 Document doc=Jsoup.parse(input,baseUrl);
@@ -38,7 +39,20 @@ public final class ScheduleParser {
                 if(entries.size()>ScheduleImport.MAX_ROWS)return error("limit");
                 return new Preview(entries,issues,access);
             }
-            return read(textRows(input));
+            // Identify a delimited table by its supported header, not punctuation in a data cell.
+            for(char delimiter:new char[]{'\t',';',','}){
+                boolean knownHeader=false;
+                for(String line:input.split("\\R")){
+                    if(!line.contains(String.valueOf(delimiter)))continue;
+                    try{
+                        List<List<String>> candidate=delimitedRows(line,delimiter);
+                        if(candidate.stream().anyMatch(ScheduleParser::hasRequiredHeader)){knownHeader=true;break;}
+                    }catch(IllegalArgumentException quoteMayContinue){/* Not a standalone header. */}
+                }
+                if(knownHeader)return read(delimitedRows(input,delimiter));
+            }
+            if(input.contains("|"))return read(markdownRows(input));
+            return read(delimitedRows(input,input.contains("\t")?'\t':';'));
         } catch(IllegalArgumentException malformed){return error("format");}
     }
     private static Preview error(String code){return new Preview(new ArrayList<>(),Arrays.asList(new Issue(0,code)),0);}
@@ -86,6 +100,10 @@ public final class ScheduleParser {
         return org.jsoup.parser.Parser.unescapeEntities(value,false).replace('\u00a0',' ').replace("\r","")
                 .replaceAll("[\\t ]+"," ").replaceAll(" *\n *","\n").trim();
     }
+    private static boolean hasRequiredHeader(List<String> row) {
+        Map<String,Integer> columns=header(row);
+        return columns.containsKey("day")&&columns.containsKey("time")&&columns.containsKey("subject");
+    }
     private static Map<String,Integer> header(List<String> cells) {
         Map<String,Integer> result=new HashMap<>();
         for(int i=0;i<cells.size();i++) {
@@ -117,30 +135,29 @@ public final class ScheduleParser {
             default:return 0;
         }
     }
-    private static List<List<String>> textRows(String text) {
+    private static List<List<String>> markdownRows(String text) {
         List<List<String>> rows=new ArrayList<>();
-        boolean markdown=Arrays.stream(text.split("\\R")).anyMatch(line->line.trim().startsWith("|"))||!text.contains("\t")&&text.contains("|");
-        if(markdown) {
-            for(String line:text.split("\\R")) {
-                if(!line.contains("|"))continue;
-                String stripped=line.trim();if(stripped.startsWith("|"))stripped=stripped.substring(1);if(stripped.endsWith("|"))stripped=stripped.substring(0,stripped.length()-1);
-                rows.add(Arrays.asList(stripped.split("(?<!\\\\)\\|",-1)));
-            }
-        } else {
-            char delimiter=text.contains("\t")?'\t':';';
-            List<String> row=new ArrayList<>();StringBuilder cell=new StringBuilder();boolean quoted=false;
-            for(int i=0;i<text.length();i++) {
-                char c=text.charAt(i);
-                if(c=='"'&&(quoted||cell.length()==0)) {
-                    if(quoted&&i+1<text.length()&&text.charAt(i+1)=='"'){cell.append('"');i++;}else quoted=!quoted;
-                } else if(!quoted&&(c==delimiter||c=='\n')) {
-                    row.add(cell.toString());cell.setLength(0);
-                    if(c=='\n'){rows.add(row);row=new ArrayList<>();}
-                } else if(c!='\r')cell.append(c);
-            }
-            if(quoted)throw new IllegalArgumentException("Unclosed quote");
-            row.add(cell.toString());rows.add(row);
+        for(String line:text.split("\\R")) {
+            if(!line.contains("|"))continue;
+            String stripped=line.trim();if(stripped.startsWith("|"))stripped=stripped.substring(1);if(stripped.endsWith("|"))stripped=stripped.substring(0,stripped.length()-1);
+            rows.add(Arrays.asList(stripped.split("(?<!\\\\)\\|",-1)));
         }
+        return rows;
+    }
+    private static List<List<String>> delimitedRows(String text,char delimiter) {
+        List<List<String>> rows=new ArrayList<>();
+        List<String> row=new ArrayList<>();StringBuilder cell=new StringBuilder();boolean quoted=false;
+        for(int i=0;i<text.length();i++) {
+            char c=text.charAt(i);
+            if(c=='"'&&(quoted||cell.length()==0)) {
+                if(quoted&&i+1<text.length()&&text.charAt(i+1)=='"'){cell.append('"');i++;}else quoted=!quoted;
+            } else if(!quoted&&(c==delimiter||c=='\n')) {
+                row.add(cell.toString());cell.setLength(0);
+                if(c=='\n'){rows.add(row);row=new ArrayList<>();}
+            } else if(c!='\r')cell.append(c);
+        }
+        if(quoted)throw new IllegalArgumentException("Unclosed quote");
+        row.add(cell.toString());rows.add(row);
         return rows;
     }
     private static final class Span { final String text;int rows;Span(String text,int rows){this.text=text;this.rows=rows;} }

@@ -27,6 +27,26 @@ public class ScheduleParserTest {
         ScheduleImport.Preview p=ScheduleParser.parse("Күн\tУақыт\tПән\tОқытушы\nДс\t08:30–09:20\tҚазақ тілі\t\"Ұстаз\nӘли\"\n\t09:25-10:15\tҚазақ тілі\tӘли");
         assertTrue(p.canImport());assertEquals(2,p.entries.size());assertEquals("Ұстаз\nӘли",p.entries.get(0).teacher);assertEquals(1,p.entries.get(1).day);
     }
+    @Test public void standardCommaCsvSupportsQuotedFieldsAndMergedDays(){
+        String csv="\uFEFFКүн,Уақыт,Пән,Оқытушы,Бөлме\nДс,08:30–09:20,\"Сынақ; пәні, A\",\"Тест\n| Оқытушысы\",DEMO-101\n,09:25-10:15,B,,";
+        ScheduleImport.Preview p=ScheduleParser.parse(csv);
+        assertTrue(p.issues.toString(),p.canImport());assertEquals(2,p.entries.size());
+        assertEquals("Сынақ; пәні, A",p.entries.get(0).subject);assertEquals("Тест\n| Оқытушысы",p.entries.get(0).teacher);
+        assertEquals(1,p.entries.get(1).day);assertEquals("DEMO-101",p.entries.get(0).room);
+    }
+    @Test public void malformedCommaCsvDoesNotAllowSavingPartialRows(){
+        String header="Күн,Уақыт,Пән\nДс,08:30-09:20,Сынақ\n";
+        ScheduleImport.Preview unterminated=ScheduleParser.parse(header+"Дс,10:00-10:50,\"Сынақ");
+        assertFalse(unterminated.canImport());assertEquals("format",unterminated.issues.get(0).code);
+        ScheduleImport.Preview invalidTime=ScheduleParser.parse(header+"Дс,25:00-25:50,Сынақ");
+        assertFalse(invalidTime.canImport());assertEquals(1,invalidTime.entries.size());
+        assertEquals("time",invalidTime.issues.get(0).code);
+    }
+    @Test public void semicolonCsvRemainsSupported(){
+        ScheduleImport.Preview p=ScheduleParser.parse("Күн;Уақыт;Пән\nДс;08:30-09:20;\"Сынақ; B, A\"\n;09:25-10:15;C");
+        assertTrue(p.issues.toString(),p.canImport());assertEquals(2,p.entries.size());
+        assertEquals("Сынақ; B, A",p.entries.get(0).subject);assertEquals(1,p.entries.get(1).day);
+    }
     @Test public void htmlMergedDaysAndLinksWork(){
         String html="<table><tr><th>День</th><th>Время</th><th>Предмет</th><th>Ссылка ВКС</th></tr><tr><td rowspan='2'>ВТ</td><td>08:30-09:20</td><td>Java</td><td><a href='/meet'>Открыть</a></td></tr><tr><td>09:25-10:15</td><td>Java</td><td></td></tr></table>";
         ScheduleImport.Preview p=ScheduleParser.parse(html,"https://university.example/schedule");

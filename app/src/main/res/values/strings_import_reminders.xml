@@ -10,6 +10,7 @@
     <string name="import_preview_hint">Сақтар алдында сабақтарды тексеріңіз</string>
     <string name="import_count">Танылған сабақтар: %1$d</string>
     <string name="import_save">Кестеге қосу</string>
+    <string name="import_save_failed">Сабақтарды сақтау мүмкін болмады. Қайта көріңіз.</string>
     <string name="import_done">Қосылды: %1$d · Қайталанған: %2$d · Жаңа пәндер: %3$d</string>
     <string name="import_clipboard_empty">Кесте мәтінін қойыңыз. Алмасу буфері бос болуы мүмкін.</string>
     <string name="import_limit">Кесте тым үлкен. Бір ретте 500 сабаққа дейін қосыңыз.</string>

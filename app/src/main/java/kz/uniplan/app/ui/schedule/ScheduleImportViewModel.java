@@ -38,10 +38,28 @@ public final class ScheduleImportViewModel extends AndroidViewModel {
     public String url(){String value=state.get("url");return value==null?"":value;}
     public androidx.lifecycle.LiveData<String> sourceChanges(){return state.getLiveData("source","");}
     public void edit(String text){if(!text.equals(source())){state.set("source",text);generation++;preview.setValue(null);}}
-    public void analyze(){
+    public void analyze(){analyze(null);}
+    public void analyze(String plainFallback){
         if(Boolean.TRUE.equals(busy.getValue())||!authorized())return;
         final int request=++generation;final String input=source();busy.setValue(true);
-        worker.execute(()->{ScheduleImport.Preview parsed=ScheduleParser.parse(input);main.post(()->{if(request!=generation)return;busy.setValue(false);if(authorized())preview.setValue(parsed);});});
+        worker.execute(()->{
+            ScheduleImport.Preview parsed=ScheduleParser.parse(input);
+            String accepted=input;
+            boolean unrecognized=parsed.entries.isEmpty()&&parsed.issues.size()==1
+                    &&("header".equals(parsed.issues.get(0).code)||"empty".equals(parsed.issues.get(0).code));
+            if(unrecognized&&plainFallback!=null&&!plainFallback.equals(input)){
+                ScheduleImport.Preview fallback=ScheduleParser.parse(plainFallback);
+                if(fallback.canImport()){accepted=plainFallback;parsed=fallback;}
+            }
+            final ScheduleImport.Preview result=parsed;final String acceptedSource=accepted;
+            main.post(()->{
+                // Busy gates all other work; a generation change here can only be an edit/clear.
+                busy.setValue(false);
+                if(request!=generation||!authorized())return;
+                if(!input.equals(acceptedSource))state.set("source",acceptedSource);
+                preview.setValue(result);
+            });
+        });
     }
     public void download(String url){
         if(Boolean.TRUE.equals(busy.getValue())||!authorized())return;
@@ -49,10 +67,10 @@ public final class ScheduleImportViewModel extends AndroidViewModel {
         worker.execute(()->{
             try {
                 String source=new ScheduleWebSource().load(url);ScheduleImport.Preview parsed=ScheduleParser.parse(source);
-                main.post(()->{if(request!=generation)return;busy.setValue(false);if(!authorized())return;state.set("source",source);preview.setValue(parsed);});
+                main.post(()->{busy.setValue(false);if(request!=generation||!authorized())return;state.set("source",source);preview.setValue(parsed);});
             } catch(Exception failure){
                 String code=failure instanceof ScheduleWebSource.SourceException?((ScheduleWebSource.SourceException)failure).code:"network";
-                main.post(()->{if(request==generation){busy.setValue(false);if(authorized())errors.setValue(new Event<>(code));}});
+                main.post(()->{busy.setValue(false);if(request==generation&&authorized())errors.setValue(new Event<>(code));});
             }
         });
     }
@@ -60,7 +78,7 @@ public final class ScheduleImportViewModel extends AndroidViewModel {
         ScheduleImport.Preview current=preview.getValue();
         if(Boolean.TRUE.equals(busy.getValue())||!authorized()||current==null||!current.canImport())return;
         busy.setValue(true);
-        repository.importSchedule(owner,current.entries,(result,error)->{busy.setValue(false);if(error==null)saved.setValue(new Event<>(result));else errors.setValue(new Event<>(error));});
+        repository.importSchedule(owner,current.entries,(result,error)->{busy.setValue(false);if(error==null)saved.setValue(new Event<>(result));else errors.setValue(new Event<>("linked".equals(error)||"unknown".equals(error)?"save":error));});
     }
     private boolean authorized(){if(owner!=null&&repository.session()==owner)return true;errors.setValue(new Event<>("session"));return false;}
     @Override protected void onCleared(){generation++;worker.shutdownNow();super.onCleared();}
