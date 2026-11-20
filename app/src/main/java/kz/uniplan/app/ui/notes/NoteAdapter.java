@@ -30,7 +30,8 @@ final class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         holder.binding.noteModified.setText(holder.itemView.getContext().getString(R.string.notes_modified, Ui.dateTime(note.updatedAt)));
         holder.binding.getRoot().setContentDescription(holder.itemView.getContext().getString(R.string.notes_open, note.title));
         holder.binding.getRoot().setOnClickListener(v -> listener.open(note.id));
-        kz.uniplan.app.util.Appearance.applyCard(holder.binding.getRoot());
+        String[] tones={"peach","lavender","mint","rose"};
+        kz.uniplan.app.util.Appearance.applyCard(holder.binding.getRoot(),tones[(int)Math.floorMod(note.id,tones.length)]);
     }
     static final class NoteHolder extends RecyclerView.ViewHolder {
         final RowNoteBinding binding;

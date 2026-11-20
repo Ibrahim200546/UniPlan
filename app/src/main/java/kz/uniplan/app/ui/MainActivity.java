@@ -41,8 +41,10 @@ public final class MainActivity extends BaseActivity {
             int id=destination.getId();
             boolean top=id==R.id.homeFragment||id==R.id.tasksFragment||id==R.id.scheduleFragment||id==R.id.notesFragment||id==R.id.profileFragment;
             binding.bottomNav.setVisibility(top?View.VISIBLE:View.GONE);
+            binding.toolbar.setVisibility(id==R.id.homeFragment||id==R.id.tasksFragment||id==R.id.scheduleFragment?View.GONE:View.VISIBLE);
         });
         app.auth().session().observe(this,current->{ if(current!=session) redirect(); });
+        if(state==null&&getIntent().getBooleanExtra("openSchedule",false))binding.bottomNav.setSelectedItemId(R.id.scheduleFragment);
     }
     private void redirect() {
         if(redirected) return; redirected=true;

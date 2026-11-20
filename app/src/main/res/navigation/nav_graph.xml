@@ -33,4 +33,5 @@
 <argument android:name="id" app:argType="long" android:defaultValue="0L"/>
 </fragment>
 <fragment android:id="@+id/appearanceFragment" android:name="kz.uniplan.app.ui.profile.AppearanceFragment" android:label="@string/appearance_title" />
+<fragment android:id="@+id/scheduleImportFragment" android:name="kz.uniplan.app.ui.schedule.ScheduleImportFragment" android:label="@string/import_title" />
 </navigation>

@@ -44,7 +44,7 @@ public final class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.Hold
         h.b.openLink.setVisibility(l.meetingUrl.isEmpty()?View.GONE:View.VISIBLE);
         h.b.openLink.setOnClickListener(v->LessonLinks.open(c,l.meetingUrl));
         h.b.getRoot().setOnClickListener(v->open.accept(l.id));
-        kz.uniplan.app.util.Appearance.applyCard(h.b.getRoot());
+        kz.uniplan.app.util.Appearance.applyCard(h.b.getRoot(),subject==null?"lavender":kz.uniplan.app.util.Appearance.subjectTone(subject.color));
     }
     @Override public int getItemCount(){return items.size();}
     static final class Holder extends RecyclerView.ViewHolder{final ItemCoreLessonBinding b;Holder(ItemCoreLessonBinding b){super(b.getRoot());this.b=b;}}

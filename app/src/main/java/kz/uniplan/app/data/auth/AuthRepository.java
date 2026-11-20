@@ -11,6 +11,9 @@ public interface AuthRepository {
         }
     }
     interface Callback { void complete(Integer errorStringRes); }
+    interface OAuthCallback { void complete(String url, Integer errorStringRes); }
+    default boolean supportsGoogle() { return false; }
+    default void startGoogle(OAuthCallback callback) { callback.complete(null,kz.uniplan.app.R.string.auth_configuration); }
     LiveData<Session> session();
     Session current();
     boolean isDemo();

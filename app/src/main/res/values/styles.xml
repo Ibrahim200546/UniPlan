@@ -1,0 +1,22 @@
+<resources>
+    <style name="Widget.UniPlan.Input" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+    </style>
+    <style name="TextAppearance.UniPlan.Heading" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:letterSpacing">-0.025</item>
+    </style>
+    <style name="TextAppearance.UniPlan.Section" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:letterSpacing">-0.015</item>
+    </style>
+    <style name="TextAppearance.UniPlan.Navigation" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+</resources>

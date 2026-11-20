@@ -12,6 +12,7 @@ public final class UniPlanApp extends Application {
     private StudyRepository data;
     private NoteFiles files;
     private SettingsStore preferences;
+    private kz.uniplan.app.notifications.LessonReminders reminders;
     @Override public void onCreate() {
         super.onCreate();
         preferences=new SettingsStore(this); preferences.apply();
@@ -22,10 +23,12 @@ public final class UniPlanApp extends Application {
             data.configureCloud(http::request);
         }
         files=new NoteFiles(this,auth);
+        reminders=new kz.uniplan.app.notifications.LessonReminders(this);
     }
     public static UniPlanApp get(Context context) { return (UniPlanApp)context.getApplicationContext(); }
     public AuthRepository auth() { return auth; }
     public StudyRepository data() { return data; }
     public NoteFiles files() { return files; }
     public SettingsStore prefs() { return preferences; }
+    public kz.uniplan.app.notifications.LessonReminders reminders() { return reminders; }
 }

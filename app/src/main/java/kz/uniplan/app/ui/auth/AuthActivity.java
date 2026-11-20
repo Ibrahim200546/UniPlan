@@ -32,8 +32,14 @@ public final class AuthActivity extends BaseActivity {
         binding.submit.setOnClickListener(v->model.submit(binding.name.getText().toString(),binding.email.getText().toString(),binding.password.getText().toString(),binding.repeat.getText().toString()));
         binding.toggle.setOnClickListener(v->{ model.toggle(); renderMode(); });
         binding.reset.setOnClickListener(v->model.reset(binding.email.getText().toString()));
+        binding.google.setOnClickListener(v->model.google());
+        model.browser.observe(this,url->{if(url!=null){
+            model.browser.setValue(null);
+            try { startActivity(new Intent(Intent.ACTION_VIEW,android.net.Uri.parse(url))); }
+            catch(android.content.ActivityNotFoundException unavailable){model.notice.setValue(R.string.auth_failed);}
+        }});
         binding.cancelRecovery.setOnClickListener(v->app.auth().signOut());
-        model.busy.observe(this,busy->{ binding.progress.setVisibility(busy?View.VISIBLE:View.GONE); binding.submit.setEnabled(!busy); binding.reset.setEnabled(!busy); binding.toggle.setEnabled(!busy); });
+        model.busy.observe(this,busy->{ binding.progress.setVisibility(busy?View.VISIBLE:View.GONE); binding.submit.setEnabled(!busy); binding.reset.setEnabled(!busy); binding.toggle.setEnabled(!busy); binding.google.setEnabled(!busy); });
         app.auth().recovering().observe(this,recovering->renderMode());
         model.notice.observe(this,notice->{ if(notice!=null) { Snackbar.make(binding.getRoot(),notice,Snackbar.LENGTH_LONG).show(); model.notice.setValue(null); } });
         app.auth().session().observe(this,session->{
@@ -41,6 +47,7 @@ public final class AuthActivity extends BaseActivity {
                 navigated=true;
                 Intent intent=new Intent(this,MainActivity.class);
                 Bundle extras=new Bundle(); extras.putString("greeting",session.displayName); intent.putExtras(extras);
+                intent.putExtra("openSchedule",getIntent().getBooleanExtra("openSchedule",false));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent); finish();
             }
@@ -58,8 +65,11 @@ public final class AuthActivity extends BaseActivity {
         boolean recovery=model.recovering(), register=model.registering()&&!recovery;
         binding.nameBox.setVisibility(register?View.VISIBLE:View.GONE); binding.repeatBox.setVisibility(register||recovery?View.VISIBLE:View.GONE);
         binding.emailBox.setVisibility(recovery?View.GONE:View.VISIBLE);
-        binding.toggle.setVisibility(recovery?View.GONE:View.VISIBLE); binding.reset.setVisibility(recovery?View.GONE:View.VISIBLE);
+        binding.toggle.setVisibility(recovery?View.GONE:View.VISIBLE); binding.reset.setVisibility(recovery||register?View.GONE:View.VISIBLE);
+        binding.authHeading.setText(recovery?R.string.auth_new_password:register?R.string.design_register_title:R.string.design_sign_in_title);
+        if(!UniPlanApp.get(this).auth().isDemo())binding.subtitle.setText(register?R.string.design_register_subtitle:R.string.auth_subtitle);
         binding.cancelRecovery.setVisibility(recovery?View.VISIBLE:View.GONE);
+        binding.google.setVisibility(!recovery&&UniPlanApp.get(this).auth().supportsGoogle()?View.VISIBLE:View.GONE);
         binding.submit.setText(recovery?R.string.auth_new_password:register?R.string.auth_register:R.string.auth_sign_in);
         binding.toggle.setText(register?R.string.auth_have_account:R.string.auth_create_account);
     }

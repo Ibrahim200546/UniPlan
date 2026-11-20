@@ -19,13 +19,13 @@ public final class AppearancePalette {
             case 1: return new AppearancePalette(0xff101b29,0xff1d2c40,0xffa7c8f8,18);
             case 2: return new AppearancePalette(0xff231b13,0xff34291e,0xffedc27e,18);
             case 3: return new AppearancePalette(0xff201a2b,0xff30263f,0xffd3bafa,18);
-            default: return new AppearancePalette(0xff121c17,0xff22342b,0xffaecfbd,18);
+            default: return new AppearancePalette(0xff142321,0xff213532,0xff8dd3c8,24);
         }
         switch (index) {
             case 1: return new AppearancePalette(0xfff2f6fc,0xffe4edfb,0xff315a8b,18);
             case 2: return new AppearancePalette(0xfffbf7ef,0xfff3e8d6,0xff815b29,18);
             case 3: return new AppearancePalette(0xfff8f5fc,0xffeee4f8,0xff75528f,18);
-            default: return new AppearancePalette(0xfff8faf7,0xffe5efe7,0xff3d5c52,18);
+            default: return new AppearancePalette(0xfff8faf9,0xffffffff,0xff287d76,24);
         }
     }
     public static int parseHex(String input) {
@@ -53,7 +53,19 @@ public final class AppearancePalette {
         return 0xff000000|(r<<16)|(g<<8)|b;
     }
     public int accentOn(int surface){return legible(accent,surface);}
-    public int mutedOn(int surface){return legible(blend(ink(surface),surface,0.25),surface);}
+    public int foregroundOn(int surface){return legible(ink(surface)==0xff000000?0xff243b37:0xffedf5f2,surface);}
+    public int mutedOn(int surface){return legible(blend(foregroundOn(surface),surface,0.30),surface);}
+    /** Soft category surfaces also adapt to custom palettes and dark mode. */
+    public int tone(String tone) {
+        int color;
+        switch(tone) {
+            case "lavender": color=0xffb4a7f5; break;
+            case "peach": color=0xfff3bb8a; break;
+            case "rose": color=0xffedaebd; break;
+            default: color=0xff8cd4c2;
+        }
+        return blend(card,color,ink(card)==0xff000000?0.30:0.17);
+    }
     @Override public boolean equals(Object other){if(!(other instanceof AppearancePalette))return false;AppearancePalette p=(AppearancePalette)other;return background==p.background&&card==p.card&&accent==p.accent&&cornerDp==p.cornerDp;}
     @Override public int hashCode(){return Objects.hash(background,card,accent,cornerDp);}
 }

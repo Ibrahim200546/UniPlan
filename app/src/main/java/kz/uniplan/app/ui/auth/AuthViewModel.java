@@ -13,6 +13,12 @@ public final class AuthViewModel extends AndroidViewModel {
     public final SavedStateHandle state;
     public final MutableLiveData<Boolean> busy=new MutableLiveData<>(false);
     public final MutableLiveData<Integer> notice=new MutableLiveData<>();
+    public final MutableLiveData<String> browser=new MutableLiveData<>();
+    public void google() {
+        if(Boolean.TRUE.equals(busy.getValue()))return;
+        busy.setValue(true);
+        auth.startGoogle((url,error)->{busy.setValue(false);if(error!=null)notice.setValue(error);else browser.setValue(url);});
+    }
     public AuthViewModel(Application app,SavedStateHandle state) { super(app); this.state=state; auth=((UniPlanApp)app).auth(); }
     public boolean registering() { return Boolean.TRUE.equals(state.get("register")); }
     public boolean recovering() { return Boolean.TRUE.equals(auth.recovering().getValue()); }

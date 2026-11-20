@@ -31,6 +31,7 @@ public class HomeFragment extends BaseFragment implements QuickActionsFragment.C
     private StudyViewModel vm;
     private TaskAdapter tasksAdapter;
     private LessonAdapter lessonsAdapter;
+    private HomeSubjectAdapter subjectsAdapter;
     private final Handler handler=new Handler(Looper.getMainLooper());
     private final Runnable ticker=new Runnable(){@Override public void run(){if(b!=null){render();handler.postDelayed(this,60000);}}};
     @Override public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container,Bundle state){b=FragmentHomeBinding.inflate(inflater,container,false);return b.getRoot();}
@@ -41,6 +42,9 @@ public class HomeFragment extends BaseFragment implements QuickActionsFragment.C
         lessonsAdapter=new LessonAdapter(id->Ui.go(this,R.id.lessonEditFragment,id),true);
         b.tasksList.setLayoutManager(new LinearLayoutManager(requireContext()));b.tasksList.setAdapter(tasksAdapter);
         b.lessonsList.setLayoutManager(new LinearLayoutManager(requireContext()));b.lessonsList.setAdapter(lessonsAdapter);
+        subjectsAdapter=new HomeSubjectAdapter(id->Ui.go(this,R.id.subjectEditFragment,id));
+        b.subjectsList.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false));b.subjectsList.setAdapter(subjectsAdapter);
+        b.allSubjects.setOnClickListener(v->Ui.go(this,R.id.subjectListFragment,0));
         vm.tasks.observe(getViewLifecycleOwner(),items->render());vm.subjects.observe(getViewLifecycleOwner(),items->render());vm.lessons.observe(getViewLifecycleOwner(),items->render());vm.profile.observe(getViewLifecycleOwner(),profile->render());
         vm.errors.observe(getViewLifecycleOwner(),event->{String error=event.take();if(error!=null)message(error);});
     }
@@ -54,14 +58,16 @@ public class HomeFragment extends BaseFragment implements QuickActionsFragment.C
         b.groupText.setText(group);b.groupText.setVisibility(group.isEmpty()?View.GONE:View.VISIBLE);
         int active=0,done=0,overdue=0;List<TaskEntity> tasks=new ArrayList<>();
         if(vm.tasks.getValue()!=null)for(TaskEntity task:vm.tasks.getValue()){if(task.completed)done++;else{active++;tasks.add(task);if(task.dueAt<now)overdue++;}}
-        b.activeText.setText(getString(R.string.core_active_count,active));b.doneText.setText(getString(R.string.core_done_count,done));b.overdueText.setText(getString(R.string.core_overdue_count,overdue));
+        b.activeText.setText(String.valueOf(active));b.doneText.setText(String.valueOf(done));b.overdueText.setText(String.valueOf(overdue));
+        b.activeText.setContentDescription(getString(R.string.core_active_count,active));b.doneText.setContentDescription(getString(R.string.core_done_count,done));b.overdueText.setContentDescription(getString(R.string.core_overdue_count,overdue));
+        subjectsAdapter.submit(vm.subjects.getValue());
         tasks.sort(StudyItem.BY_DUE);if(tasks.size()>3)tasks=new ArrayList<>(tasks.subList(0,3));tasksAdapter.submit(tasks,vm.subjects.getValue());
         b.emptyTasks.setVisibility(tasks.isEmpty()?View.VISIBLE:View.GONE);
         List<LessonEntity> lessons=vm.lessons.getValue()==null?new ArrayList<>():new ArrayList<>(vm.lessons.getValue());
         lessons.sort(Comparator.comparingLong(l->nextOccurrence(l,now)));if(lessons.size()>3)lessons=new ArrayList<>(lessons.subList(0,3));lessonsAdapter.submit(lessons,vm.subjects.getValue());
         b.emptyLessons.setVisibility(lessons.isEmpty()?View.VISIBLE:View.GONE);
         b.emptyText.setText(vm.tasks.getValue()==null?R.string.loading:R.string.core_home_empty);
-        b.emptyText.setVisibility(vm.tasks.getValue()==null||((vm.subjects.getValue()==null||vm.subjects.getValue().isEmpty())&&active+done==0)?View.VISIBLE:View.GONE);
+        b.emptyText.setVisibility(vm.tasks.getValue()==null||vm.subjects.getValue()==null||vm.subjects.getValue().isEmpty()?View.VISIBLE:View.GONE);
     }
     private long nextOccurrence(LessonEntity lesson,long now){
         Calendar start=Calendar.getInstance();start.setTimeInMillis(now);start.set(Calendar.HOUR_OF_DAY,0);start.set(Calendar.MINUTE,0);start.set(Calendar.SECOND,0);start.set(Calendar.MILLISECOND,0);
@@ -74,5 +80,5 @@ public class HomeFragment extends BaseFragment implements QuickActionsFragment.C
     @Override public void onCreateNote(){Ui.go(this,R.id.action_home_to_note,0);}
     @Override public void onResume(){super.onResume();handler.post(ticker);}
     @Override public void onPause(){handler.removeCallbacks(ticker);super.onPause();}
-    @Override public void onDestroyView(){handler.removeCallbacks(ticker);b.tasksList.setAdapter(null);b.lessonsList.setAdapter(null);tasksAdapter=null;lessonsAdapter=null;b=null;super.onDestroyView();}
+    @Override public void onDestroyView(){handler.removeCallbacks(ticker);b.tasksList.setAdapter(null);b.lessonsList.setAdapter(null);b.subjectsList.setAdapter(null);tasksAdapter=null;lessonsAdapter=null;subjectsAdapter=null;b=null;super.onDestroyView();}
 }

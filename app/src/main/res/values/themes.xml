@@ -1,6 +1,16 @@
 <resources>
-<style name="Theme.UniPlan" parent="Theme.Material3.DayNight.NoActionBar">
-<item name="colorPrimary">#3D5C52</item><item name="colorOnPrimary">#FFFFFF</item><item name="colorPrimaryContainer">#DCEAE1</item><item name="colorOnPrimaryContainer">#142D24</item>
-<item name="colorSecondary">#845E2F</item><item name="colorSurface">#F8FAF7</item><item name="colorOnSurface">#19251F</item><item name="android:windowLightStatusBar">true</item>
-<item name="android:fontFamily">sans</item><item name="android:windowActionModeOverlay">true</item></style>
+    <style name="Theme.UniPlan" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#287D76</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#DDF1E9</item>
+        <item name="colorOnPrimaryContainer">#243B37</item>
+        <item name="colorSecondary">#7968AC</item>
+        <item name="colorSurface">#F8FAF9</item>
+        <item name="colorOnSurface">#243B37</item>
+        <item name="colorOutline">#B9CCC5</item>
+        <item name="textInputStyle">@style/Widget.UniPlan.Input</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
 </resources>

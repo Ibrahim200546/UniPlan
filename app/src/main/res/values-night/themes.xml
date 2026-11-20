@@ -1,2 +1,15 @@
-<resources><style name="Theme.UniPlan" parent="Theme.Material3.DayNight.NoActionBar">
-<item name="colorPrimary">#AECFBD</item><item name="colorOnPrimary">#17392A</item><item name="colorPrimaryContainer">#2D4D3E</item><item name="colorOnPrimaryContainer">#D8EDDF</item><item name="colorSecondary">#E9BF84</item><item name="colorSurface">#121C17</item><item name="colorOnSurface">#E1EAE4</item><item name="android:windowLightStatusBar">false</item><item name="android:fontFamily">sans</item></style></resources>
+<resources>
+    <style name="Theme.UniPlan" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#8DD3C8</item>
+        <item name="colorOnPrimary">#163B34</item>
+        <item name="colorPrimaryContainer">#2A4940</item>
+        <item name="colorOnPrimaryContainer">#E5F4EF</item>
+        <item name="colorSecondary">#C8B8EE</item>
+        <item name="colorSurface">#142321</item>
+        <item name="colorOnSurface">#EDF5F2</item>
+        <item name="textInputStyle">@style/Widget.UniPlan.Input</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+</resources>

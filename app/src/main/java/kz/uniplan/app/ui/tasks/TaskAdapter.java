@@ -34,7 +34,8 @@ public final class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.Holder> 
         holder.b.deleteButton.setVisibility(compact ? View.GONE : View.VISIBLE);
         holder.b.deleteButton.setOnClickListener(v -> actions.delete(t.id));
         holder.b.getRoot().setOnClickListener(v -> actions.open(t.id));
-        kz.uniplan.app.util.Appearance.applyCard(holder.b.getRoot());
+        SubjectEntity subject=CoreText.findSubject(subjects,t.subjectId);
+        kz.uniplan.app.util.Appearance.applyCard(holder.b.getRoot(),t.completed?"mint":subject==null?"lavender":kz.uniplan.app.util.Appearance.subjectTone(subject.color));
     }
     @Override public int getItemCount() { return items.size(); }
     static final class Holder extends RecyclerView.ViewHolder {

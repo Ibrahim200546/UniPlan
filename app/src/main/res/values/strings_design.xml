@@ -1,0 +1,14 @@
+<resources>
+    <string name="design_sign_in_title">Қайта қош келдің</string>
+    <string name="design_register_title">Өзіңнен бастайық</string>
+    <string name="design_register_subtitle">Аккаунт ашып, оқу күніңді жоспарла.</string>
+    <string name="design_today_title">Бәрі қолыңнан келеді.</string>
+    <string name="design_today_subtitle">Әр күн — мақсатқа бір қадам.</string>
+    <string name="design_subjects_subtitle">Пәндерің әрдайым қолыңда</string>
+    <string name="design_see_all">Барлығы</string>
+    <string name="design_new_task">Тапсырма</string>
+    <string name="design_new_note">Жазба</string>
+    <string name="design_stat_active">Орындалуда</string>
+    <string name="design_stat_done">Дайын</string>
+    <string name="design_stat_overdue">Кешіккен</string>
+</resources>

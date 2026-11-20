@@ -55,6 +55,22 @@ public final class SupabaseAuthRepository implements AuthRepository {
     @Override public Session current() { return current; }
     @Override public boolean isDemo() { return false; }
     @Override public boolean supportsCloud() { return true; }
+    @Override public boolean supportsGoogle() { return true; }
+    @Override public void startGoogle(OAuthCallback callback) {
+        java.util.concurrent.atomic.AtomicReference<String> url=new java.util.concurrent.atomic.AtomicReference<>();
+        run(error->callback.complete(error==null?url.get():null,error),generation->{
+            JSONObject settings=checked(http.request("GET","/auth/v1/settings",null,null));
+            JSONObject external=settings.optJSONObject("external");
+            if(external==null||!external.optBoolean("google"))throw new AuthError(R.string.auth_google_unavailable);
+            JSONObject challenge=pkce("google",generation);
+            url.set(Uri.parse(project+"/auth/v1/authorize").buildUpon()
+                    .appendQueryParameter("provider","google").appendQueryParameter("redirect_to",REDIRECT)
+                    .appendQueryParameter("code_challenge",challenge.getString("code_challenge"))
+                    .appendQueryParameter("code_challenge_method","s256")
+                    .appendQueryParameter("prompt","select_account").build().toString());
+            return null;
+        });
+    }
     @Override public LiveData<Boolean> recovering() { return recoveryState; }
     @Override public void openDemo(int index) { /* This provider never creates a local identity. */ }
 
@@ -103,7 +119,7 @@ public final class SupabaseAuthRepository implements AuthRepository {
         else if(current==null || !uid.equals(current.uid)) {
             JSONObject metadata=user.optJSONObject("user_metadata");
             String email=user.optString("email");
-            current=new Session(uid,metadata==null?email:metadata.optString("display_name",email),email);
+            current=new Session(uid,metadata==null?email:metadata.optString("display_name",metadata.optString("full_name",metadata.optString("name",email))),email);
         }
         Session published=current;
         main.post(() -> { synchronized(lock) { if(epoch==generation && current==published) {
@@ -151,6 +167,10 @@ public final class SupabaseAuthRepository implements AuthRepository {
             if(!"kz.uniplan.app".equals(uri.getScheme()) || !"auth".equals(uri.getHost())
                     || !"/callback".equals(uri.getPath()) || uri.getUserInfo()!=null || uri.getPort()!=-1)
                 throw new AuthError(R.string.auth_link_expired);
+            if(uri.getQueryParameter("error")!=null) {
+                synchronized(lock){requireEpoch(generation);pending.clear();}
+                throw new AuthError(R.string.auth_google_cancelled);
+            }
             String code=uri.getQueryParameter("code"), saved=pending.load();
             if(code==null || code.isEmpty() || saved==null) throw new AuthError(R.string.auth_link_expired);
             JSONObject flow=new JSONObject(saved);

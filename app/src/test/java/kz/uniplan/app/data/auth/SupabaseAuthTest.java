@@ -44,6 +44,28 @@ public class SupabaseAuthTest {
         while(done.getCount()>0 && System.nanoTime()<deadline) { shadowOf(Looper.getMainLooper()).idle(); Thread.sleep(5); }
         assertEquals("Auth callback completed",0,done.getCount()); return result.get();
     }
+    @Test public void googleUsesPkceAndExchangesCallbackForSession() throws Exception {
+        MemoryStore storage=new MemoryStore(),pending=new MemoryStore();JSONObject result=tokens(false);
+        result.getJSONObject("user").put("user_metadata",new JSONObject().put("full_name","Google Student"));
+        SupabaseAuthRepository auth=new SupabaseAuthRepository((method,path,body,bearer)->{
+            if(path.equals("/auth/v1/settings"))return new SupabaseHttp.Response(200,"{\"external\":{\"google\":true}}");
+            assertEquals("/auth/v1/token?grant_type=pkce",path);assertEquals("code",body.optString("auth_code"));
+            assertTrue(body.optString("code_verifier").length()>=43);return response(result);
+        },storage,pending,PROJECT,true);
+        AtomicReference<String> url=new AtomicReference<>();
+        assertNull(await(cb->auth.startGoogle((value,error)->{url.set(value);cb.complete(error);})));
+        android.net.Uri uri=android.net.Uri.parse(url.get());assertEquals("google",uri.getQueryParameter("provider"));
+        assertEquals(SupabaseAuthRepository.REDIRECT,uri.getQueryParameter("redirect_to"));assertEquals("s256",uri.getQueryParameter("code_challenge_method"));
+        assertFalse(url.get().contains(new JSONObject(pending.value).getString("verifier")));assertNull(auth.current());
+        assertNull(await(cb->auth.handleRedirect(SupabaseAuthRepository.REDIRECT+"?code=code",cb)));
+        assertEquals("Google Student",auth.current().displayName);assertNull(pending.value);assertNotNull(storage.value);
+    }
+    @Test public void disabledGoogleDoesNotCreatePendingFlow() throws Exception {
+        MemoryStore pending=new MemoryStore();
+        SupabaseAuthRepository auth=new SupabaseAuthRepository((m,p,b,t)->new SupabaseHttp.Response(200,"{\"external\":{\"google\":false}}"),new MemoryStore(),pending,PROJECT,true);
+        assertEquals(Integer.valueOf(R.string.auth_google_unavailable),await(cb->auth.startGoogle((url,error)->{assertNull(url);cb.complete(error);})));
+        assertNull(pending.value);assertNull(auth.current());
+    }
     @Test public void confirmationRequiredNeverPublishesAnAuthenticatedSession() throws Exception {
         MemoryStore storage=new MemoryStore(),pending=new MemoryStore();
         SupabaseAuthRepository auth=new SupabaseAuthRepository((method,path,body,bearer)->{

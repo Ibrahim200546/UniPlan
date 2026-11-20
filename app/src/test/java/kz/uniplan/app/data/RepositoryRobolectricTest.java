@@ -270,6 +270,22 @@ public class RepositoryRobolectricTest {
         assertEquals("session", this.<Boolean>await(cb -> files.export(document, body, "owner-b", cb)).error);
     }
 
+    @Test public void scheduleImportIsAtomicDeduplicatedAndAccountScoped() {
+        var entry=new kz.uniplan.app.domain.schedule.ScheduleImport.Entry(1,1,1,510,560,"Қазақ тілі","Дәріс","Ұстаз","314","");
+        var rows=java.util.Arrays.asList(entry,entry);
+        Outcome<kz.uniplan.app.domain.schedule.ScheduleImport.Outcome> first=await(cb->repository.importSchedule(auth.current(),rows,cb));
+        assertNull(first.error);assertEquals(1,first.value.added);assertEquals(1,first.value.duplicates);assertEquals(1,first.value.subjects);
+        Outcome<kz.uniplan.app.domain.schedule.ScheduleImport.Outcome> second=await(cb->repository.importSchedule(auth.current(),rows,cb));
+        assertNull(second.error);assertEquals(0,second.value.added);assertEquals(2,second.value.duplicates);
+        var previous=auth.current();auth.select("owner-b");
+        assertEquals("session",this.<kz.uniplan.app.domain.schedule.ScheduleImport.Outcome>await(cb->repository.importSchedule(previous,rows,cb)).error);
+        assertEquals(0,onDatabase(()->dao.lessons("owner-b")).size());
+        var invalid=new kz.uniplan.app.domain.schedule.ScheduleImport.Entry(2,1,1,600,500,"Invalid","","","","");
+        assertNotNull(this.<kz.uniplan.app.domain.schedule.ScheduleImport.Outcome>await(cb->repository.importSchedule(auth.current(),java.util.Arrays.asList(entry,invalid),cb)).error);
+        assertEquals(0,onDatabase(()->dao.lessons("owner-b")).size());assertEquals(0,onDatabase(()->dao.subjects("owner-b")).size());
+        assertEquals(1,onDatabase(()->dao.lessons("owner-a")).size());
+    }
+
     private long createSubject() {
         SubjectEntity subject = new SubjectEntity(); subject.name = "Әдебиет"; subject.teacher = "Оқытушы";
         Outcome<Long> result = await(cb -> repository.saveSubject(subject, cb));

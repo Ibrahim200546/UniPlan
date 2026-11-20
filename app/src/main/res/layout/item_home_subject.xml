@@ -1,0 +1,8 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="152dp" android:layout_height="wrap_content" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" app:cardCornerRadius="24dp" app:strokeWidth="0dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="146dp" android:orientation="vertical" android:padding="18dp">
+        <ImageView android:id="@+id/icon" android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/ic_book" android:importantForAccessibility="no" />
+        <TextView android:id="@+id/titleText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:textSize="15sp" android:fontFamily="sans-serif-medium" android:minLines="3" android:maxLines="3" android:ellipsize="end" />
+        <TextView android:id="@+id/teacherText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:textSize="11sp" android:tag="muted" android:maxLines="1" android:ellipsize="end" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

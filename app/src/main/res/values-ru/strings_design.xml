@@ -1,0 +1,14 @@
+<resources>
+    <string name="design_sign_in_title">С возвращением</string>
+    <string name="design_register_title">Начнём с тебя</string>
+    <string name="design_register_subtitle">Создай аккаунт и собери свой учебный день.</string>
+    <string name="design_today_title">Всё получится.</string>
+    <string name="design_today_subtitle">Один день. Один шаг к цели.</string>
+    <string name="design_subjects_subtitle">Твои предметы под рукой</string>
+    <string name="design_see_all">Все</string>
+    <string name="design_new_task">Задание</string>
+    <string name="design_new_note">Заметка</string>
+    <string name="design_stat_active">В работе</string>
+    <string name="design_stat_done">Готово</string>
+    <string name="design_stat_overdue">Не в срок</string>
+</resources>

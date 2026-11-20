@@ -1,1 +1,9 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#3D5C52" android:fillType="evenOdd" android:pathData="M4,4h6v11a2,2 0,0 0,4 0V4h6v11a8,8 0,0 1,-16 0z"/></vector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp" android:viewportWidth="96" android:viewportHeight="96">
+    <!-- Open U, with a separate mortarboard and gold tassel. -->
+    <path android:fillColor="#388B83" android:pathData="M23,40 L36,44 L36,64 C36,73 40,78 48,78 C56,78 60,73 60,64 L60,44 L73,40 L73,64 C73,81 64,91 48,91 C32,91 23,81 23,64 Z" />
+    <path android:fillColor="#4D9F97" android:pathData="M29,27 L48,36 L67,27 L67,40 Q48,52 29,40 Z" />
+    <path android:fillColor="#82C4BE" android:pathData="M8,22 L48,4 L88,22 L48,41 Z" />
+    <path android:fillColor="#00000000" android:strokeColor="#E9B769" android:strokeWidth="3" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M49,23 L82,26 L82,47" />
+    <path android:fillColor="#E9B769" android:pathData="M79,47 Q82,44 85,47 L87,57 L77,57 Z" />
+</vector>

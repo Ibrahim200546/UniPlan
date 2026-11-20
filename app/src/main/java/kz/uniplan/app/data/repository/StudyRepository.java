@@ -9,6 +9,11 @@ import androidx.lifecycle.Observer;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -20,6 +25,7 @@ import kz.uniplan.app.data.local.entity.*;
 import kz.uniplan.app.util.Validation;
 import kz.uniplan.app.data.sync.CloudSync;
 import kz.uniplan.app.data.auth.SupabaseHttp;
+import kz.uniplan.app.domain.schedule.ScheduleImport;
 
 /** Single owner-scoped boundary for UI. Input objects are copied before enqueueing. */
 public final class StudyRepository {
@@ -199,6 +205,46 @@ public final class StudyRepository {
                     e.lessonNumber,e.lessonType,e.teacher,e.meetingUrl);
             return e.id;
         },callback);
+    }
+    /** One transaction, additions only, with identity fixed to the preview's session. */
+    public void importSchedule(Session expected,List<ScheduleImport.Entry> entries,Result<ScheduleImport.Outcome> callback) {
+        List<ScheduleImport.Entry> snapshot=new ArrayList<>(entries);
+        if(expected==null||auth.current()!=expected){main.post(()->callback.done(null,"session"));return;}
+        execute(true,uid->{
+            if(auth.current()!=expected)throw new Failure("session");
+            valid(!snapshot.isEmpty()&&snapshot.size()<=ScheduleImport.MAX_ROWS);
+            Map<String,SubjectEntity> subjectsByName=new HashMap<>();
+            for(SubjectEntity subject:dao.subjects(uid))subjectsByName.putIfAbsent(ScheduleImport.key(subject.name),subject);
+            Set<String> known=new HashSet<>();
+            for(LessonEntity lesson:dao.lessons(uid))known.add(lessonKey(lesson));
+            int added=0,duplicates=0,created=0;
+            int[] colors={0xff4c927b,0xff7762b4,0xffbd8641,0xffb56787};
+            for(ScheduleImport.Entry entry:snapshot) {
+                valid(entry!=null&&entry.valid());
+                String name=ScheduleImport.key(entry.subject);SubjectEntity subject=subjectsByName.get(name);
+                if(subject==null){
+                    subject=new SubjectEntity();subject.ownerUid=uid;subject.name=entry.subject.trim();subject.teacher=entry.teacher;
+                    subject.color=colors[Math.floorMod(name.hashCode(),colors.length)];subject.id=dao.insertSubject(subject);
+                    subjectsByName.put(name,subject);created++;
+                }
+                LessonEntity lesson=new LessonEntity();lesson.ownerUid=uid;lesson.subjectId=subject.id;
+                lesson.dayOfWeek=entry.day;lesson.startMinute=entry.start;lesson.endMinute=entry.end;lesson.lessonNumber=entry.number;
+                lesson.lessonType=entry.type;lesson.teacher=entry.teacher;lesson.room=entry.room;lesson.meetingUrl=entry.url;
+                if(!known.add(lessonKey(lesson))){duplicates++;continue;}
+                dao.insertLesson(lesson);added++;
+            }
+            if(auth.current()!=expected)throw new Failure("session");
+            return new ScheduleImport.Outcome(added,duplicates,created);
+        },callback);
+    }
+    private static String lessonKey(LessonEntity l) {
+        // Delimited lengths prevent user text from creating ambiguous concatenations.
+        StringBuilder key=new StringBuilder(l.subjectId+":"+l.dayOfWeek+":"+l.startMinute+":"+l.endMinute+":"+l.lessonNumber+":");
+        for(String field:new String[]{l.lessonType,l.teacher,l.room}){
+            String value=ScheduleImport.key(field);key.append(value.length()).append(':').append(value);
+        }
+        String url=l.meetingUrl.trim();key.append(url.length()).append(':').append(url);
+        return key.toString();
     }
     public void saveNote(NoteEntity value,Result<Long> callback) {
         NoteEntity e = value.copy();

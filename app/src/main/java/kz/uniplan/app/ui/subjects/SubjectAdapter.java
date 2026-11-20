@@ -25,7 +25,9 @@ public final class SubjectAdapter extends BaseAdapter {
         SubjectEntity subject=getItem(position);b.titleText.setText(subject.name);b.teacherText.setText(subject.teacher);
         b.icon.setImageResource(subject.icon==1?R.drawable.ic_tasks:subject.icon==2?R.drawable.ic_schedule:R.drawable.ic_book);
         b.icon.setImageTintList(ColorStateList.valueOf(subject.color));
-        kz.uniplan.app.util.Appearance.applyRow(b.getRoot());
+        String tone=kz.uniplan.app.util.Appearance.subjectTone(subject.color);
+        kz.uniplan.app.util.Appearance.applyCard(b.getRoot(),tone);
+        b.icon.setImageTintList(ColorStateList.valueOf(kz.uniplan.app.util.AppearancePalette.legible(subject.color,kz.uniplan.app.util.Appearance.palette(parent.getContext()).tone(tone))));
         return convertView;
     }
 }

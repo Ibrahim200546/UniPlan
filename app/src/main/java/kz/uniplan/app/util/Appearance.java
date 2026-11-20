@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,13 @@ import kz.uniplan.app.UniPlanApp;
 /** Applies saved colors to Views without replacing activities or losing their forms. */
 public final class Appearance {
     private Appearance() { }
+    public static String subjectTone(int color) {
+        float[] hsv=new float[3];Color.colorToHSV(color,hsv);
+        if(hsv[0]<45||hsv[0]>=340)return "peach";
+        if(hsv[0]<180)return "mint";
+        if(hsv[0]<280)return "lavender";
+        return "rose";
+    }
     public static boolean isNight(Context context) {
         return (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)==Configuration.UI_MODE_NIGHT_YES;
     }
@@ -41,6 +49,9 @@ public final class Appearance {
     }
     /** Adapter hook: call after binding. Subject color strips and ImageView tints are preserved. */
     public static void applyCard(MaterialCardView card) { AppearancePalette p=palette(card.getContext());walk(card,p,p.card,false); }
+    public static void applyCard(MaterialCardView card,String tone) {
+        card.setTag(R.id.appearance_card_tone,tone);applyCard(card);
+    }
     public static void applyRow(View row) { AppearancePalette p=palette(row.getContext());walk(row,p,p.background,false); }
     public static void applyActivity(Activity activity) {
         View content=activity.findViewById(android.R.id.content);
@@ -78,30 +89,38 @@ public final class Appearance {
         int surface=inherited;
         boolean screen=Boolean.TRUE.equals(view.getTag(R.id.appearance_screen_root));
         if(screen)surface=p.background;
-        else if(view instanceof MaterialCardView||view instanceof BottomNavigationView)surface=p.card;
+        else if(view instanceof BottomNavigationView)surface=0xff1d302c;
+        else if(view instanceof MaterialCardView){
+            Object tone=view.getTag(R.id.appearance_card_tone);
+            if(tone==null&&view.getTag() instanceof String)tone=view.getTag();
+            surface=tone instanceof String?p.tone((String)tone):p.card;
+        }
         else if(view instanceof Toolbar||view instanceof TabLayout)surface=p.background;
         else if(view.getId()==R.id.demoBanner)surface=AppearancePalette.blend(p.background,p.accent,0.13);
         else if(view instanceof MaterialButton||view instanceof TextInputLayout||view instanceof EditText||view instanceof CompoundButton||view instanceof ProgressBar)surface=inherited;
         else surface=opaqueBackground(view.getBackground(),inherited);
         Object previous=view.getTag(R.id.appearance_palette_tag);
         boolean changed=!(previous instanceof Applied)||!((Applied)previous).same(p,surface);
-        int foreground=AppearancePalette.ink(surface),muted=p.mutedOn(surface),accent=p.accentOn(surface);
+        int foreground=p.foregroundOn(surface),muted=p.mutedOn(surface),accent=p.accentOn(surface);
         if(changed) {
             view.setTag(R.id.appearance_palette_tag,new Applied(p,surface));
             if(screen)view.setBackgroundColor(surface);
             if(view.getId()==R.id.demoBanner)view.setBackgroundColor(surface);
             if(view instanceof MaterialCardView){
-                MaterialCardView card=(MaterialCardView)view;card.setCardBackgroundColor(p.card);
+                MaterialCardView card=(MaterialCardView)view;card.setCardBackgroundColor(surface);
                 card.setRadius(p.cornerDp*view.getResources().getDisplayMetrics().density);
-                card.setStrokeColor(AppearancePalette.blend(p.card,AppearancePalette.ink(p.card),0.18));
+                card.setStrokeWidth(0);card.setCardElevation(0);
             }
             if(view instanceof Toolbar){
                 Toolbar toolbar=(Toolbar)view;toolbar.setBackgroundColor(surface);toolbar.setTitleTextColor(foreground);toolbar.setSubtitleTextColor(muted);
             }
             if(view instanceof BottomNavigationView){
-                BottomNavigationView nav=(BottomNavigationView)view;nav.setBackgroundTintList(ColorStateList.valueOf(surface));
-                int indicator=AppearancePalette.blend(surface,p.accent,0.12);
-                nav.setItemIconTintList(checked(p.accentOn(indicator),muted));nav.setItemTextColor(checked(accent,muted));
+                BottomNavigationView nav=(BottomNavigationView)view;
+                GradientDrawable background=new GradientDrawable();background.setColor(surface);
+                background.setCornerRadius(26*view.getResources().getDisplayMetrics().density);
+                nav.setBackground(background);nav.setBackgroundTintList(ColorStateList.valueOf(surface));nav.setElevation(0);
+                int indicator=0xff36574f;
+                nav.setItemIconTintList(checked(0xffbcf2df,0xffb9c9c3));nav.setItemTextColor(checked(0xffbcf2df,0xffb9c9c3));
                 nav.setItemActiveIndicatorColor(ColorStateList.valueOf(indicator));
             }
             if(view instanceof TabLayout){
@@ -109,8 +128,8 @@ public final class Appearance {
             }
             if(view instanceof TextInputLayout){
                 TextInputLayout input=(TextInputLayout)view;
-                if(input.getBoxBackgroundMode()!=TextInputLayout.BOX_BACKGROUND_NONE)input.setBoxBackgroundColor(surface);
-                input.setBoxStrokeColorStateList(new ColorStateList(new int[][]{new int[]{android.R.attr.state_focused},new int[]{}},new int[]{accent,muted}));
+                if(input.getBoxBackgroundMode()!=TextInputLayout.BOX_BACKGROUND_NONE)input.setBoxBackgroundColor(AppearancePalette.blend(surface,p.card,0.7));
+                input.setBoxStrokeColorStateList(new ColorStateList(new int[][]{new int[]{android.R.attr.state_focused},new int[]{}},new int[]{accent,AppearancePalette.blend(surface,foreground,0.22)}));
                 input.setDefaultHintTextColor(ColorStateList.valueOf(muted));input.setHintTextColor(ColorStateList.valueOf(accent));
                 input.setHelperTextColor(ColorStateList.valueOf(muted));input.setCounterTextColor(ColorStateList.valueOf(muted));
                 int error=AppearancePalette.legible(0xffb3261e,surface);input.setErrorTextColor(ColorStateList.valueOf(error));input.setCounterOverflowTextColor(ColorStateList.valueOf(error));
@@ -118,7 +137,9 @@ public final class Appearance {
             }
             if(view instanceof MaterialButton)styleButton((MaterialButton)view,p,surface);
             else if(view instanceof TextView){
-                TextView text=(TextView)view;text.setTextColor(colors(foreground,muted));text.setHintTextColor(muted);
+                TextView text=(TextView)view;
+                int ink="muted".equals(view.getTag())?muted:"accent".equals(view.getTag())?accent:foreground;
+                text.setTextColor(colors(ink,muted));text.setHintTextColor(muted);
                 if(view instanceof EditText){
                     text.setHighlightColor((p.accent&0xffffff)|0x55000000);
                     if(Build.VERSION.SDK_INT>=29&&((EditText)view).getTextCursorDrawable()!=null)((EditText)view).getTextCursorDrawable().mutate().setTint(accent);
