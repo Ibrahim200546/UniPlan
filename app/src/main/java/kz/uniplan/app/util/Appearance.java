@@ -169,6 +169,8 @@ public final class Appearance {
         return color!=null&&Color.alpha(color)==255?color:fallback;
     }
     private static void styleButton(MaterialButton button,AppearancePalette p,int surface){
+        // The Google sign-in button keeps its brand colors and full-color icon.
+        if(button.getId()==R.id.google)return;
         Object stored=button.getTag(R.id.appearance_button_kind);
         int kind;
         if(stored instanceof Integer)kind=(Integer)stored;

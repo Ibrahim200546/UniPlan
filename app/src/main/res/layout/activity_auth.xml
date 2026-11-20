@@ -48,7 +48,30 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:text="@string/auth_create_account" android:textSize="14sp" />
         </LinearLayout>
         <com.google.android.material.button.MaterialButton android:id="@+id/cancelRecovery" style="@style/Widget.Material3.Button.TextButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/cancel" />
-        <com.google.android.material.button.MaterialButton android:id="@+id/google" style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="match_parent" android:layout_height="56dp" android:text="@string/auth_google" android:textSize="14sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/google"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="52dp"
+            android:gravity="center"
+            android:text="@string/auth_google"
+            android:textAllCaps="false"
+            android:textColor="@color/auth_google_ink"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:letterSpacing="0"
+            app:backgroundTint="@color/auth_google_surface"
+            app:strokeColor="#D1D9E0"
+            app:strokeWidth="1dp"
+            app:cornerRadius="6dp"
+            app:rippleColor="#2425292E"
+            app:icon="@drawable/ic_google_brand"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconSize="18dp"
+            app:iconTint="@null" />
         <ProgressBar android:id="@+id/progress" android:layout_width="32dp" android:layout_height="32dp" android:layout_gravity="center_horizontal" android:visibility="gone" />
         <TextView android:id="@+id/appVersion" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/app_name"
             android:gravity="center" android:textSize="11sp" android:tag="muted" android:layout_marginTop="16dp" />
